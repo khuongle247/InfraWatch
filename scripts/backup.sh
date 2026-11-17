@@ -27,3 +27,4 @@ tar -czf "$TARGET_FILE" \
 
 echo "✅ Backup successfully created at: $TARGET_FILE"
 echo "Archive size: $(du -sh "$TARGET_FILE" | cut -f1)"
+

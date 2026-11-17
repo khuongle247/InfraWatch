@@ -44,3 +44,4 @@ Tài liệu này chi tiết hóa các yêu cầu chức năng (Functional Requir
 - **NFR-SEC-01:** Tuyệt đối không lưu trữ khóa bí mật, Telegram Bot Token hoặc mật khẩu quản trị trong mã nguồn hoặc git repository.
 - **NFR-SEC-02:** Toàn bộ thông tin nhạy cảm phải được nạp thông qua biến môi trường (.env) được bảo vệ quyền truy cập trên máy chủ.
 - **NFR-SEC-03:** Bảng điều khiển Grafana phải được khóa bằng xác thực tài khoản quản trị (tắt tính năng cho phép người dùng tự đăng ký).
+

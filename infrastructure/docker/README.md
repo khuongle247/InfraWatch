@@ -4,3 +4,4 @@ Thư mục này chứa các file cấu hình Docker mở rộng và Dockerfile p
 
 ## Thành phần:
 - `Dockerfile.dashboard`: Dockerfile đa tầng (multi-stage build) để build ứng dụng React (Vite) và phục vụ thông qua Nginx web server trên môi trường container.
+

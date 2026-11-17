@@ -22,3 +22,4 @@ Thư mục này quản lý toàn bộ các kịch bản và mã nguồn kiểm t
 ### 4. `performance/` (Kiểm thử hiệu năng)
 - Đánh giá tải của Prometheus khi số lượng container tăng cao.
 - Đo thời gian phản hồi (Latency) của FastAPI Backend khi nhiều người dùng cùng truy cập Web Dashboard.
+

@@ -86,3 +86,4 @@ Nếu tất cả các dịch vụ trả về `OK`, bạn có thể truy cập c�
   ```bash
   docker compose logs -f [service_name]
   ```
+

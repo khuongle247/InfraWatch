@@ -17,3 +17,4 @@ async def get_system_status():
         "version": "v1",
         "message": "InfraWatch API v1 root endpoint active."
     }
+

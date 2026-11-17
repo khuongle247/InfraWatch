@@ -34,3 +34,4 @@ Tất cả những thay đổi đáng chú ý của dự án **InfraWatch** sẽ
   - File `.gitignore` toàn diện chống commit secrets và file rác.
   - File `.env.example` với các biến môi trường mẫu.
   - File quy tắc đóng góp `CONTRIBUTING.md` và giấy phép `LICENSE` (MIT).
+

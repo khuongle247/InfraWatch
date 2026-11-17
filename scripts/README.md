@@ -15,3 +15,4 @@ Thư mục này tập hợp các tiện ích dòng lệnh (Shell Scripts) phục
 - `chaos/`: Chứa các kịch bản mô phỏng sự cố có kiểm soát (Chaos Engineering) để đánh giá khả năng kích hoạt cảnh báo của Prometheus & Alertmanager.
 
 > **CẢNH BÁO AN TOÀN:** Không tự ý chạy các script trong thư mục `chaos/` trên môi trường Production!
+

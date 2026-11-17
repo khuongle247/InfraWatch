@@ -49,3 +49,4 @@ echo "Đang đợi $DURATION giây trước khi tự động giải phóng..."
 sleep "$DURATION"
 
 echo "⏳ Đã hết thời gian mô phỏng."
+

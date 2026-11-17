@@ -43,3 +43,4 @@ Tài liệu này xác định mục tiêu, phạm vi, phương pháp và tiêu c
 | **Độ chính xác phục hồi** | Nhận được tin nhắn `[RESOLVED]` khi điều kiện bất thường chấm dứt. |
 | **Mức chiếm dụng tài nguyên** | Ngăn xếp InfraWatch tiêu thụ **<= 1.5 GB RAM** và **<= 10% CPU** ở trạng thái nhàn rỗi. |
 | **Không chứa Secrets** | Kiểm tra tự động 100% không phát hiện token hoặc mật khẩu lộ lọt trong git history. |
+

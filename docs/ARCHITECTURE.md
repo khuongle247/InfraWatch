@@ -71,3 +71,4 @@ graph TD
 - Chi tiết sơ đồ ngữ cảnh: [system-context.md](file:///d:/h_Nam_4/InfraWatch/docs/architecture/system-context.md)
 - Chi tiết kiến trúc container: [container-architecture.md](file:///d:/h_Nam_4/InfraWatch/docs/architecture/container-architecture.md)
 - Luồng vận chuyển dữ liệu: [monitoring-data-flow.md](file:///d:/h_Nam_4/InfraWatch/docs/architecture/monitoring-data-flow.md)
+

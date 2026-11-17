@@ -102,3 +102,4 @@ fix(scripts): resolve path syntax error in health-check.sh
 - **Backend Engineer:** Quản lý FastAPI app, API Gateway, Prometheus integration, Service logic.
 - **Frontend Engineer:** Quản lý React Web Dashboard, UI/UX components, Real-time charts.
 - **QA & Automation Engineer:** Quản lý test suites, chaos scripts, benchmark dataset, nghiệm thu.
+

@@ -31,3 +31,4 @@ InfraWatch được xây dựng với mục tiêu cung cấp giải pháp giám 
 - **DevOps / SysAdmin / SRE:** Theo dõi tình trạng hạ tầng, tiếp nhận cảnh báo Telegram và điều tra nguyên nhân gốc rễ (RCA).
 - **Phát triển ứng dụng (Developers):** Xem xét mức độ tiêu hao tài nguyên của container để tối ưu mã nguồn.
 - **Ban quản lý kỹ thuật (Team Lead / IT Manager):** Đánh giá báo cáo tải, SLA và tính sẵn sàng của hệ thống.
+

@@ -10,3 +10,4 @@ Thư mục này lưu trữ các minh chứng thực tế phục vụ báo cáo t
 - `demo/`: Video demo hoặc file GIF minh họa các kịch bản sử dụng chính của hệ thống.
 
 > **Quy tắc an toàn:** Tuyệt đối không lưu ảnh hoặc tài liệu có chứa IP public nhạy cảm, Token Telegram thật hoặc mật khẩu vào thư mục evidence.
+

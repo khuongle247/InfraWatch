@@ -59,3 +59,4 @@ graph TD
 | `infrawatch-grafana` | `grafana/grafana:10.4.2` | 3000 | 3001 | Bảng điều khiển phân tích số liệu hạ tầng chuyên sâu |
 | `infrawatch-node-exporter` | `prom/node-exporter:v1.8.1` | 9100 | 9100 | Xuất metrics phần cứng và HĐH Linux của máy chủ |
 | `infrawatch-cadvisor` | `gcr.io/cadvisor/cadvisor:v0.49.1` | 8080 | 8080 | Xuất metrics CPU, RAM, Disk, Net của Docker containers |
+

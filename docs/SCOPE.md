@@ -37,3 +37,4 @@ Các thành phần dưới đây **chưa được triển khai** trong giai đo�
 - ❌ **PostgreSQL để lưu Time-Series:** Prometheus TSDB là nguồn lưu trữ time-series duy nhất; không sao chép time-series vào SQL database.
 - ❌ **Blackbox Exporter, JMX, SNMP:** Giữ danh sách exporters gọn gàng (chỉ Node Exporter và cAdvisor).
 - ❌ **Trí tuệ nhân tạo (AI/ML) dự đoán sự cố:** Chưa tích hợp các mô hình Machine Learning/Deep Learning vào luồng nghiệp vụ khi chưa hoàn thành hệ thống nền tảng.
+

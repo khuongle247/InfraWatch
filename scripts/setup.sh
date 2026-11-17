@@ -54,3 +54,4 @@ echo "=========================================================="
 echo "🎉 InfraWatch setup verification completed successfully."
 echo "You can now run: docker compose up -d"
 echo "=========================================================="
+

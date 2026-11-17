@@ -31,3 +31,4 @@ Thư mục `docs/` là kho tri thức trung tâm của dự án InfraWatch. Mọ
 - [KPI_DEFINITIONS.md](file:///d:/h_Nam_4/InfraWatch/docs/KPI_DEFINITIONS.md): Định nghĩa các chỉ số đo lường hiệu năng kỹ thuật và độ ổn định hệ thống.
 - [RISK_REGISTER.md](file:///d:/h_Nam_4/InfraWatch/docs/RISK_REGISTER.md): Bảng đăng ký và kiểm soát rủi ro dự án.
 - [CHANGELOG.md](file:///d:/h_Nam_4/InfraWatch/docs/CHANGELOG.md): Nhật ký lịch sử các bản cập nhật.
+

@@ -35,3 +35,4 @@ receivers:
           <b>Mô tả:</b> {{ .CommonAnnotations.description }}
           <b>Target:</b> <code>{{ .CommonLabels.instance }}</code>
           <b>Thời gian:</b> {{ .StartsAt.Format "2006-01-02 15:04:05 UTC" }}
+

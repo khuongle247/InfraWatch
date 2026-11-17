@@ -40,3 +40,4 @@ graph TD
 | **Hạ tầng Linux / Cloud VMs** | Hệ thống bên ngoài | Đối tượng được giám sát: Máy chủ vật lý, máy ảo Ubuntu/Debian trong lab. |
 | **Docker Containers** | Hệ thống bên ngoài | Các ứng dụng và dịch vụ đang vận hành trên máy chủ. |
 | **Telegram Bot API** | Hệ thống bên ngoài | Kênh trung gian phân phối thông báo khẩn cấp tới thiết bị di động của kỹ sư. |
+

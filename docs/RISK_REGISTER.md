@@ -14,3 +14,4 @@ Tài liệu này theo dõi các rủi ro kỹ thuật, vận hành và quản l�
 | **RSK-04** | cAdvisor không thể truy cập cgroup/Docker socket trên máy ảo mới | Trung bình | Cao | **TRUNG BÌNH** | Chạy container với cờ `privileged: true` và mount đầy đủ các đường dẫn `/sys`, `/var/run`, `/var/lib/docker`. | DevOps Lead |
 | **RSK-05** | Backend API bị nghẽn khi truy vấn PromQL phức tạp | Thấp | Trung bình | **THẤP** | Tối ưu hóa truy vấn PromQL, tận dụng Instant Query thay vì Range Query cho các màn hình tổng quan, đặt timeout cho client HTTP. | Backend Lead |
 | **RSK-06** | Xung đột cổng kết nối (Port Conflict) với các dịch vụ đã có trên máy Host | Cao | Thấp | **THẤP** | Cho phép tùy biến toàn bộ port thông qua biến môi trường trong file `.env` (ví dụ `GRAFANA_PORT=3001`, `FRONTEND_PORT=3000`). | Full Team |
+

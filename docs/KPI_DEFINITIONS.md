@@ -58,3 +58,4 @@ Tài liệu này chuẩn hóa các định nghĩa và công thức đo lường 
 | **Độ trễ phục hồi sự cố** | MTTR | Thời gian từ khi sự cố được khắc phục đến khi nhận thông báo `RESOLVED` | `< 90 giây` |
 | **Tỷ lệ Scrape thành công** | Scrape Success Rate | Tỷ lệ phần trăm các chu kỳ cào dữ liệu thành công từ exporters | `>= 99.5%` |
 | **Thời gian phản hồi API** | API Latency (p95) | Thời gian phản hồi 95% các yêu cầu HTTP của Backend API | `< 300 ms` |
+

@@ -167,3 +167,4 @@ services:
       - monitoring-network
     depends_on:
       - backend
+

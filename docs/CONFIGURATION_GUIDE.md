@@ -74,3 +74,4 @@ Không nên đổi URL này thành `localhost:9090` vì container Grafana cần 
 
 ### 3.2. Dashboard Provider (`infrastructure/grafana/provisioning/dashboards/dashboards.yml`)
 Mọi tệp JSON dashboard đặt trong thư mục `infrastructure/grafana/dashboards/` sẽ tự động được import vào thư mục "InfraWatch" trên giao diện Grafana mỗi khi container khởi động hoặc sau mỗi 30 giây.
+

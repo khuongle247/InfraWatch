@@ -112,3 +112,4 @@ Dự án áp dụng chặt chẽ quy trình phát triển chuyên nghiệp:
 
 ## 6. Giấy phép
 Dự án được phân phối dưới giấy phép [MIT License](file:///d:/h_Nam_4/InfraWatch/LICENSE).
+

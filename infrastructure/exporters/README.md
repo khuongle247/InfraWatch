@@ -26,3 +26,4 @@ Thư mục này tài liệu hóa và quản lý các agent thu thập dữ liệ
 ---
 
 > **Lưu ý kiến trúc:** Hiện tại hệ thống chưa tích hợp các exporter mở rộng (như Blackbox Exporter, JMX Exporter, Database Exporter) để giữ đúng phạm vi thiết kế Phase 0.
+

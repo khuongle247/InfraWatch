@@ -70,3 +70,4 @@ sequenceDiagram
     AM->>TG: HTTPS POST /sendMessage (Formatted HTML Resolved)
     TG->>OnCall: Tin nhắn Telegram: "✅ [RESOLVED - ĐÃ PHỤC HỒI]"
 ```
+

@@ -1,0 +1,29 @@
+# ==============================================================================
+# Git Attributes Configuration for InfraWatch (Cross-Platform Normalization)
+# ==============================================================================
+
+# Auto-detect text files and normalize line endings to LF in repository
+* text=auto eol=lf
+
+# Force Linux line endings (LF) for Shell scripts & Docker-related files (CRITICAL)
+*.sh text eol=lf
+Dockerfile* text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Configuration & Code files
+*.py text eol=lf
+*.js text eol=lf
+*.jsx text eol=lf
+*.json text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.md text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.tar.gz binary

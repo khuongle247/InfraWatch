@@ -47,3 +47,4 @@ echo "Giữ trạng thái đầy ổ trong 90 giây để Prometheus cào metric
 sleep 90
 
 echo "⏳ Đã hết thời gian mô phỏng."
+

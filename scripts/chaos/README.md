@@ -16,3 +16,4 @@ Thư mục này chứa các kịch bản mô phỏng sự cố thực nghiệm (
 | `high-cpu.sh` | Tạo tải CPU cao đột biến (stress test) | `node_cpu_seconds_total`, `node_load1` |
 | `disk-usage.sh` | Tạo file rác tạm thời để đẩy mức chiếm dụng ổ cứng lên ngưỡng cảnh báo (>85%) | `node_filesystem_free_bytes` |
 | `service-down.sh` | Dừng đột ngột một container dịch vụ (ví dụ: backend hoặc cadvisor) | `up`, `container_last_seen` |
+

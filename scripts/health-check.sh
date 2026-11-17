@@ -47,3 +47,4 @@ else
     echo "⚠️  Some services are down or initializing. Inspect logs using: docker compose logs"
     exit 1
 fi
+
