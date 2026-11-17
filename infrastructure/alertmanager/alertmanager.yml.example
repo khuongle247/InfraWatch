@@ -1,0 +1,37 @@
+# ==============================================================================
+# Alertmanager Configuration Example (InfraWatch N4.7)
+# Documentation: https://prometheus.io/docs/alerting/latest/configuration/
+# 
+# HƯỚNG DẪN SỬ DỤNG:
+# 1. Sao chép file này thành alertmanager.yml khi triển khai thực tế.
+# 2. Thay thế bot_token và chat_id bằng thông tin cấu hình Telegram thực.
+# 3. Tuyệt đối KHÔNG commit file alertmanager.yml có token thật vào Git!
+# ==============================================================================
+
+global:
+  resolve_timeout: 5m
+
+# Định tuyến cảnh báo (Alert Routing Tree)
+route:
+  group_by: ['alertname', 'cluster', 'service', 'instance']
+  group_wait: 30s        # Thời gian chờ để gom nhóm các cảnh báo ban đầu
+  group_interval: 5m     # Khoảng thời gian gửi đợt thông báo tiếp theo của nhóm
+  repeat_interval: 4h    # Khoảng thời gian gửi lại cảnh báo nếu sự cố chưa giải quyết
+  receiver: 'telegram-notifications'
+
+# Danh sách bộ thu cảnh báo (Receivers)
+receivers:
+  - name: 'telegram-notifications'
+    telegram_configs:
+      - bot_token: '0000000000:AAxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx' # Thay bằng bot_token từ @BotFather
+        chat_id: -1000000000000                                      # Thay bằng chat_id của nhóm/kênh Telegram
+        parse_mode: 'HTML'
+        send_resolved: true                                          # Gửi thông báo khi sự cố đã được phục hồi
+        message: >-
+          {{ if eq .Status "firing" }}🔥 <b>[ALARM - SỰ CỐ HẠ TẦNG]</b>{{ else }}✅ <b>[RESOLVED - ĐÃ PHỤC HỒI]</b>{{ end }}
+          
+          <b>Mức độ:</b> <code>{{ .CommonLabels.severity }}</code>
+          <b>Cảnh báo:</b> {{ .CommonAnnotations.summary }}
+          <b>Mô tả:</b> {{ .CommonAnnotations.description }}
+          <b>Target:</b> <code>{{ .CommonLabels.instance }}</code>
+          <b>Thời gian:</b> {{ .StartsAt.Format "2006-01-02 15:04:05 UTC" }}

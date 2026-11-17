@@ -1,0 +1,43 @@
+# ==============================================================================
+# Prometheus Core Configuration (InfraWatch N4.7)
+# Documentation: https://prometheus.io/docs/prometheus/latest/configuration/configuration/
+# ==============================================================================
+
+global:
+  scrape_interval: 15s     # Chu kỳ thu thập metrics mặc định (15 giây)
+  evaluation_interval: 15s # Chu kỳ đánh giá alerting rules (15 giây)
+  scrape_timeout: 10s      # Thời gian chờ phản hồi tối đa của mỗi target
+
+# Tích hợp Alertmanager để chuyển tiếp cảnh báo khi phát hiện vi phạm ngưỡng
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - 'alertmanager:9093'
+
+# Tải các file quy tắc cảnh báo (Alert Rules) được định nghĩa trong thư mục rules
+rule_files:
+  - '/etc/prometheus/rules/*.yml'
+
+# Cấu hình danh sách các mục tiêu thu thập dữ liệu (Scrape Targets)
+scrape_configs:
+  # ----------------------------------------------------------------------------
+  # 1. Prometheus Self-Monitoring: Giám sát chính máy chủ Prometheus
+  # ----------------------------------------------------------------------------
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # ----------------------------------------------------------------------------
+  # 2. Node Exporter: Thu thập chỉ số tài nguyên máy chủ Linux (CPU, RAM, Disk, Net)
+  # ----------------------------------------------------------------------------
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+
+  # ----------------------------------------------------------------------------
+  # 3. cAdvisor: Thu thập chỉ số tài nguyên chi tiết từng Docker Container
+  # ----------------------------------------------------------------------------
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']

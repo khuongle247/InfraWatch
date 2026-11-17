@@ -1,0 +1,95 @@
+# ==============================================================================
+# Git Ignore Configuration for InfraWatch (N4.7)
+# ==============================================================================
+
+# Environment variables & Secrets (CRITICAL)
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.cert
+*.crt
+alertmanager.yml
+
+# Python / FastAPI
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+venv/
+.venv/
+env/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Node.js / React / Vite
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+frontend/dist/
+frontend/dist-ssr/
+*.local
+
+# Editor & IDE configurations
+.vscode/
+!.vscode/settings.json.example
+!.vscode/extensions.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Docker volumes and persistent data mounts (Local Lab Data)
+data/
+prometheus_data/
+grafana_data/
+alertmanager_data/
+
+# Logs and runtime files
+*.log
+logs/
+*.pid
+
+# Temporary and test artifacts
+tmp/
+temp/
+evidence/test-results/*
+!evidence/test-results/.gitkeep
+evidence/chaos-results/*
+!evidence/chaos-results/.gitkeep
+evidence/screenshots/*
+!evidence/screenshots/.gitkeep
+evidence/demo/*
+!evidence/demo/.gitkeep

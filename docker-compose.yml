@@ -1,0 +1,169 @@
+version: '3.8'
+
+# ==============================================================================
+# InfraWatch (N4.7) - Centralized Monitoring Architecture
+# Services:
+#   - prometheus: Time-series metrics storage and query engine
+#   - node-exporter: Host OS resource metrics collector
+#   - cadvisor: Container resource metrics collector
+#   - alertmanager: Alert deduplication and Telegram routing
+#   - grafana: Deep analysis and operational dashboards
+#   - backend: FastAPI application bridge to Prometheus & dashboard API
+#   - frontend: React + Vite web dashboard application
+# ==============================================================================
+
+networks:
+  monitoring-network:
+    driver: bridge
+
+volumes:
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  alertmanager_data:
+    driver: local
+
+services:
+  # ----------------------------------------------------------------------------
+  # 1. Prometheus - Core Time-Series Metric Database
+  # ----------------------------------------------------------------------------
+  prometheus:
+    image: prom/prometheus:v2.52.0
+    container_name: infrawatch-prometheus
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.enable-lifecycle'
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    volumes:
+      - ./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./infrastructure/prometheus/rules:/etc/prometheus/rules:ro
+      - prometheus_data:/prometheus
+    networks:
+      - monitoring-network
+
+  # ----------------------------------------------------------------------------
+  # 2. Node Exporter - Linux Host Machine Metrics Collector
+  # ----------------------------------------------------------------------------
+  node-exporter:
+    image: prom/node-exporter:v1.8.1
+    container_name: infrawatch-node-exporter
+    restart: unless-stopped
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - "${NODE_EXPORTER_PORT:-9100}:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    networks:
+      - monitoring-network
+
+  # ----------------------------------------------------------------------------
+  # 3. cAdvisor - Container Metrics Collector
+  # ----------------------------------------------------------------------------
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.49.1
+    container_name: infrawatch-cadvisor
+    restart: unless-stopped
+    privileged: true
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    ports:
+      - "${CADVISOR_PORT:-8080}:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    networks:
+      - monitoring-network
+
+  # ----------------------------------------------------------------------------
+  # 4. Alertmanager - Alert Routing & Notification Engine
+  # ----------------------------------------------------------------------------
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    container_name: infrawatch-alertmanager
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/alertmanager/alertmanager.yml'
+      - '--storage.path=/alertmanager'
+    ports:
+      - "${ALERTMANAGER_PORT:-9093}:9093"
+    volumes:
+      - ./infrastructure/alertmanager/alertmanager.yml.example:/etc/alertmanager/alertmanager.yml:ro
+      - alertmanager_data:/alertmanager
+    networks:
+      - monitoring-network
+
+  # ----------------------------------------------------------------------------
+  # 5. Grafana - Deep Metrics Visualization & Dashboards
+  # ----------------------------------------------------------------------------
+  grafana:
+    image: grafana/grafana:10.4.2
+    container_name: infrawatch-grafana
+    restart: unless-stopped
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    ports:
+      - "${GRAFANA_PORT:-3001}:3000"
+    volumes:
+      - ./infrastructure/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./infrastructure/grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - grafana_data:/var/lib/grafana
+    networks:
+      - monitoring-network
+    depends_on:
+      - prometheus
+
+  # ----------------------------------------------------------------------------
+  # 6. Backend - FastAPI Integration & Custom API Service
+  # ----------------------------------------------------------------------------
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: infrawatch-backend
+    restart: unless-stopped
+    environment:
+      - ENVIRONMENT=${ENVIRONMENT:-development}
+      - PROMETHEUS_URL=${PROMETHEUS_URL:-http://prometheus:9090}
+      - ALERTMANAGER_URL=${ALERTMANAGER_URL:-http://alertmanager:9093}
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    networks:
+      - monitoring-network
+    depends_on:
+      - prometheus
+
+  # ----------------------------------------------------------------------------
+  # 7. Frontend - React + Vite Operations Web Dashboard
+  # ----------------------------------------------------------------------------
+  frontend:
+    build:
+      context: ./infrastructure/docker
+      dockerfile: Dockerfile.dashboard
+    container_name: infrawatch-frontend
+    restart: unless-stopped
+    environment:
+      - VITE_API_URL=http://localhost:${BACKEND_PORT:-8000}
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    networks:
+      - monitoring-network
+    depends_on:
+      - backend

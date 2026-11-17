@@ -1,0 +1,14 @@
+apiVersion: 1
+
+# Cấu hình tự động nạp các tệp JSON Dashboard từ thư mục lưu trữ vào Grafana
+providers:
+  - name: 'InfraWatch Dashboards'
+    orgId: 1
+    folder: 'InfraWatch'
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 30
+    allowUiUpdates: true
+    options:
+      path: /var/lib/grafana/dashboards
+      foldersFromFilesStructure: true
