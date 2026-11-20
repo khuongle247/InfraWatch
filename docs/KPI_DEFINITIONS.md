@@ -72,6 +72,9 @@ Mọi kịch bản kiểm thử sự cố và phục hồi đều ghi nhận the
 | **Độ trễ xác nhận phục hồi** | Recovery Notification Time (MTTR) | $T_3 - T_{\text{stop}}$ *(từ khi dừng lỗi đến khi nhận thông báo `RESOLVED`)* | `< 90 giây` |
 | **Tỷ lệ Scrape thành công** | Scrape Success Rate | $\frac{\text{Số lần scrape thành công (`up == 1`)}}{\text{Tổng số lần scrape}} \times 100\%$ | `>= 99.5%` |
 | **Thời gian phản hồi API** | API Latency (p95) | Thời gian phản hồi 95% yêu cầu HTTP của FastAPI (`/api/v1/*`) | `< 300 ms` |
+| **Mức tiêu thụ tài nguyên hệ thống** | Resource Footprint | Tổng RAM (`container_memory_working_set_bytes`) và CPU (`rate(container_cpu_usage_seconds_total[5m])`) của toàn bộ các container thuộc stack InfraWatch (7 container) ở trạng thái chạy bình thường | `RAM <= 1.5 GB`<br>`CPU <= 10%` |
+
+> **Lưu ý cấu hình kiểm thử độ trễ:** Ở Mục 1.1, ngưỡng cảnh báo CPU mặc định duy trì 2–5 phút áp dụng cho vận hành thực tế. Khi thực hiện kịch bản đo độ trễ phát hiện (`MTTD < 60 giây`) trên môi trường lab, tham số `for` trong Alert Rules sẽ được cấu hình ở mức ngắn (ví dụ `30s`) theo thống nhất kỹ thuật với M03.
 
 ### 3.3. Bảng chỉ số chất lượng dữ liệu, cảnh báo, tái lập và bảo mật (Phần 2)
 
