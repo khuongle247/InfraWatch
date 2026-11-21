@@ -1,0 +1,43 @@
+# ==============================================================================
+# Prometheus Alert Rules — Container / cAdvisor (InfraWatch N4.7)
+# File: infrastructure/prometheus/rules/container_alerts.yml
+# ==============================================================================
+
+groups:
+  - name: container_alerts
+    rules:
+      # ------------------------------------------------------------------------
+      # 1. CPU container sử dụng cao (Warning > 1 core trong 2 phút)
+      # ------------------------------------------------------------------------
+      - alert: ContainerHighCpuUsage
+        expr: sum by (name) (rate(container_cpu_usage_seconds_total{name!=""}[5m])) > 1
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU container cao trên {{ $labels.name }}"
+          description: "Container {{ $labels.name }} sử dụng vượt quá 1 CPU core trong 2 phút."
+
+      # ------------------------------------------------------------------------
+      # 2. RAM container sử dụng cao (Warning > 500MB trong 2 phút)
+      # ------------------------------------------------------------------------
+      - alert: ContainerHighMemoryUsage
+        expr: sum by (name) (container_memory_working_set_bytes{name!=""}) > 500 * 1024 * 1024
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "RAM container cao trên {{ $labels.name }}"
+          description: "Container {{ $labels.name }} sử dụng RAM vượt quá 500MB trong 2 phút."
+
+      # ------------------------------------------------------------------------
+      # 3. Container không còn tồn tại (Critical trong 1 phút)
+      # ------------------------------------------------------------------------
+      - alert: ContainerDown
+        expr: absent(container_cpu_usage_seconds_total{name!=""})
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "ContainerDown"
+          description: "Một hoặc nhiều container không còn xuất hiện trong metrics cAdvisor."
