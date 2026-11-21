@@ -59,8 +59,10 @@ Dưới đây là danh sách các scrape job được định nghĩa trong `infr
 
 | Alert | Expression | Ngưỡng | For | Severity |
 |-------|------------|--------|-----|----------|
-| `HostHighCpuUsage` | `100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 85` | > 85% | 2m | warning |
-| `HostHighMemoryUsage` | `(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 90` | > 90% | 2m | critical |
+| `HostHighCpuUsageWarning` | `100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80` | > 80% | 5m | warning |
+| `HostHighCpuUsageCritical` | `100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90` | > 90% | 2m | critical |
+| `HostHighMemoryUsageWarning` | `(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85` | > 85% | 2m | warning |
+| `HostHighMemoryUsageCritical` | `(1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 95` | > 95% | 2m | critical |
 | `HostDiskSpaceFilling` | `(1 - (node_filesystem_free_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"})) * 100 > 85` | > 85% | 2m | warning |
 | `HostDiskSpaceCritical` | `(1 - (node_filesystem_free_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"})) * 100 > 95` | > 95% | 1m | critical |
 | `NodeExporterDown` | `up{job="node-exporter"} == 0` | = 0 | 1m | critical |
@@ -100,6 +102,12 @@ Kỹ sư nhận tin nhắn FIRING và RESOLVED
 - `group_interval: 5m`
 - `repeat_interval: 4h`
 
+**Inhibition Rules (quy tắc ấn, trong `alertmanager.yml.example`):**
+| Source | Target | Inhibition Label | Mục đích |
+|--------|--------|------------------|----------|
+| `HostDown` | `ContainerDown` | `instance` | Khi máy chủ chết, ấn alert container trên cùng instance để tránh spam |
+| `NodeExporterDown` | `HostHighCpuUsage` | `instance` | Khi Node Exporter DOWN, ấn alert CPU cao trên cùng instance |
+
 ## 5. Tệp Cấu Hình Liên Quan
 
 | Tệp | Mục đích |
@@ -110,7 +118,7 @@ Kỹ sư nhận tin nhắn FIRING và RESOLVED
 | `infrastructure/prometheus/rules/host_alerts.yml` | Alert rules cho máy chủ |
 | `infrastructure/prometheus/rules/container_alerts.yml` | Alert rules cho container |
 | `infrastructure/prometheus/rules/blackbox_alerts.yml` | Alert rules cho blackbox probing |
-| `infrastructure/alertmanager/alertmanager.yml` | Cấu hình Telegram receiver và routing |
+| `infrastructure/alertmanager/alertmanager.yml.example` | Mẫu cấu hình Telegram receiver, routing và inhibition rules (file thật nằm trong `.gitignore`) |
 
 ## 6. Lệnh Kiểm Tra
 
@@ -130,4 +138,4 @@ curl -X POST http://localhost:9093/-/reload
 
 ---
 
-*Tài liệu này đi kèm với commit `infra(prometheus): add blackbox exporter, scrape targets, and update README`.*
+*Tài liệu này đi kèm với commit `infra(prometheus): sync host alert thresholds with KPI_DEFINITIONS.md`.*
