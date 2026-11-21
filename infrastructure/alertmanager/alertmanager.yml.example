@@ -22,7 +22,7 @@ route:
 # Quy tắc ấn (Inhibition Rules): Tránh spam khi có sự cố liên quan
 inhibit_rules:
   - source_matchers:
-      - 'alertname=HostDown'
+      - 'alertname=NodeExporterDown'
     target_matchers:
       - 'alertname=ContainerDown'
     inhibition_labels:
@@ -31,7 +31,7 @@ inhibit_rules:
   - source_matchers:
       - 'alertname=NodeExporterDown'
     target_matchers:
-      - 'alertname=HostHighCpuUsage'
+      - 'alertname=~HostHighCpuUsage.*'
     inhibition_labels:
       - 'instance'
 
