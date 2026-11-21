@@ -1,40 +1,65 @@
 # ==============================================================================
 # Prometheus Alert Rules — Host / Node Exporter (InfraWatch N4.7)
 # File: infrastructure/prometheus/rules/host_alerts.yml
+# Đồng bộ với docs/KPI_DEFINITIONS.md (Mục 1.1–1.3)
 # ==============================================================================
 
 groups:
   - name: host_alerts
     rules:
       # ------------------------------------------------------------------------
-      # 1. CPU sử dụng cao trên máy chủ (Warning > 85% trong 2 phút)
+      # 1.1. CPU sử dụng cao — Warning (> 80% liên tục trong 5 phút)
       # ------------------------------------------------------------------------
-      - alert: HostHighCpuUsage
-        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 85
-        for: 2m
+      - alert: HostHighCpuUsageWarning
+        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 5m
         labels:
           severity: warning
         annotations:
           summary: "CPU cao trên {{ $labels.instance }}"
-          description: "Mức sử dụng CPU trên {{ $labels.instance }} vượt quá 85% trong 2 phút."
+          description: "Mức sử dụng CPU trên {{ $labels.instance }} vượt quá 80% liên tục trong 5 phút."
 
       # ------------------------------------------------------------------------
-      # 2. RAM sử dụng cao trên máy chủ (Critical > 90% trong 2 phút)
+      # 1.1. CPU sử dụng cao — Critical (> 90% trong 2 phút)
       # ------------------------------------------------------------------------
-      - alert: HostHighMemoryUsage
-        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 90
+      - alert: HostHighCpuUsageCritical
+        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
         for: 2m
         labels:
           severity: critical
         annotations:
-          summary: "RAM cao trên {{ $labels.instance }}"
-          description: "Mức sử dụng RAM trên {{ $labels.instance }} vượt quá 90% trong 2 phút."
+          summary: "CPU Critical trên {{ $labels.instance }}"
+          description: "Mức sử dụng CPU trên {{ $labels.instance }} vượt quá 90% trong 2 phút."
 
       # ------------------------------------------------------------------------
-      # 3. Ổ cứng gần đầy (Warning > 85% trong 2 phút)
+      # 1.2. RAM sử dụng cao — Warning (> 85%)
+      # ------------------------------------------------------------------------
+      - alert: HostHighMemoryUsageWarning
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "RAM cao trên {{ $labels.instance }}"
+          description: "Mức sử dụng RAM trên {{ $labels.instance }} vượt quá 85%."
+
+      # ------------------------------------------------------------------------
+      # 1.2. RAM sử dụng cao — Critical (> 95%)
+      # ------------------------------------------------------------------------
+      - alert: HostHighMemoryUsageCritical
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 95
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "RAM Critical trên {{ $labels.instance }}"
+          description: "Mức sử dụng RAM trên {{ $labels.instance }} vượt quá 95%."
+
+      # ------------------------------------------------------------------------
+      # 1.3. Ổ cứng gần đầy — Warning (> 85% trong 2 phút)
       # ------------------------------------------------------------------------
       - alert: HostDiskSpaceFilling
-        expr: (1 - (node_filesystem_free_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"})) * 100 > 85
+        expr: (1 - (node_filesystem_free_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100 > 85
         for: 2m
         labels:
           severity: warning
@@ -43,10 +68,10 @@ groups:
           description: "Phân vùng / trên {{ $labels.instance }} sử dụng vượt quá 85% trong 2 phút."
 
       # ------------------------------------------------------------------------
-      # 4. Ổ cứng cực kỳ đầy (Critical > 95% trong 1 phút)
+      # 1.3. Ổ cứng cực kỳ đầy — Critical (> 95% trong 1 phút)
       # ------------------------------------------------------------------------
       - alert: HostDiskSpaceCritical
-        expr: (1 - (node_filesystem_free_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"})) * 100 > 95
+        expr: (1 - (node_filesystem_free_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"}) * 100 > 95
         for: 1m
         labels:
           severity: critical
@@ -55,7 +80,7 @@ groups:
           description: "Phân vùng / trên {{ $labels.instance }} sử dụng vượt quá 95% trong 1 phút."
 
       # ------------------------------------------------------------------------
-      # 5. Node Exporter mất kết nối (Critical trong 1 phút)
+      # Node Exporter mất kết nối — Critical (trong 1 phút)
       # ------------------------------------------------------------------------
       - alert: NodeExporterDown
         expr: up{job="node-exporter"} == 0
