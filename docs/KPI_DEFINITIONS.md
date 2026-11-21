@@ -30,6 +30,26 @@ Tài liệu này chuẩn hóa các định nghĩa và công thức đo lường 
   ```
 - **Ngưỡng cảnh báo:** Warning khi `> 85%`; Critical khi `> 95%`.
 
+
+### 1.4. Các Chỉ số Blackbox Exporter (Blackbox Exporter KPIs)
+
+#### 1.4.1. Endpoint Up / Down (`probe_success`)
+- **Định nghĩa:** Kiểm tra xem endpoint HTTP/TCP có sẵn sàng phản hồi hay không.
+- **Công thức PromQL:**
+  ```promql
+  probe_success{job="blackbox-http"}
+  probe_success{job="blackbox-tcp"}
+  ```
+- **Ngưỡng cảnh báo:** Critical khi `probe_success == 0` liên tục trong 1 phút.
+
+#### 1.4.2. Thời gian phản hồi probe (`probe_duration_seconds`)
+- **Định nghĩa:** Thời gian Blackbox Exporter mất để hoàn thành một lần probe.
+- **Công thức PromQL:**
+  ```promql
+  probe_duration_seconds{job="blackbox-http"}
+  ```
+- **Ngưỡng cảnh báo:** Warning khi `> 2 giây` liên tục trong 1 phút.
+
 ---
 
 ## 2. Các Chỉ số Khối Container (Container Metrics KPIs)
