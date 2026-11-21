@@ -13,11 +13,27 @@ global:
 
 # Định tuyến cảnh báo (Alert Routing Tree)
 route:
-  group_by: ['alertname', 'cluster', 'service', 'instance']
+  group_by: ['alertname', 'instance', 'severity']
   group_wait: 30s        # Thời gian chờ để gom nhóm các cảnh báo ban đầu
   group_interval: 5m     # Khoảng thời gian gửi đợt thông báo tiếp theo của nhóm
   repeat_interval: 4h    # Khoảng thời gian gửi lại cảnh báo nếu sự cố chưa giải quyết
   receiver: 'telegram-notifications'
+
+# Quy tắc ấn (Inhibition Rules): Tránh spam khi có sự cố liên quan
+inhibit_rules:
+  - source_matchers:
+      - 'alertname=HostDown'
+    target_matchers:
+      - 'alertname=ContainerDown'
+    inhibition_labels:
+      - 'instance'
+
+  - source_matchers:
+      - 'alertname=NodeExporterDown'
+    target_matchers:
+      - 'alertname=HostHighCpuUsage'
+    inhibition_labels:
+      - 'instance'
 
 # Danh sách bộ thu cảnh báo (Receivers)
 receivers:
@@ -29,7 +45,7 @@ receivers:
         send_resolved: true                                          # Gửi thông báo khi sự cố đã được phục hồi
         message: >-
           {{ if eq .Status "firing" }}🔥 <b>[ALARM - SỰ CỐ HẠ TẦNG]</b>{{ else }}✅ <b>[RESOLVED - ĐÃ PHỤC HỒI]</b>{{ end }}
-          
+
           <b>Mức độ:</b> <code>{{ .CommonLabels.severity }}</code>
           <b>Cảnh báo:</b> {{ .CommonAnnotations.summary }}
           <b>Mô tả:</b> {{ .CommonAnnotations.description }}
