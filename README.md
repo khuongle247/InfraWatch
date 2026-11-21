@@ -29,6 +29,7 @@
 | **Container Engine** | Docker Engine & Compose | Docker 24+, Compose v2 | Đóng gói và điều phối dịch vụ |
 | **Metrics Collector** | Node Exporter | v1.8.x | Thu thập metrics hệ điều hành Linux |
 | **Container Metrics** | cAdvisor | v0.49.x | Thu thập metrics Docker containers |
+| **Blackbox Prober** | Blackbox Exporter | v0.25.x | Kiểm tra sẵn sàng endpoint HTTP và cổng TCP |
 | **Time-Series DB** | Prometheus | v2.52.x | Lưu trữ và xử lý truy vấn PromQL |
 | **Alert Router** | Alertmanager | v0.27.x | Quản lý, gom nhóm và định tuyến cảnh báo |
 | **Notification** | Telegram Bot API | Long Polling / Webhook | Kênh thông báo tức thời tới kỹ sư vận hành |
@@ -98,6 +99,7 @@ Chi tiết xem tại [DIRECTORY_STRUCTURE.md](file:///d:/h_Nam_4/InfraWatch/docs
 - **Alertmanager:** `http://localhost:9093`
 - **Node Exporter:** `http://localhost:9100`
 - **cAdvisor:** `http://localhost:8080`
+- **Blackbox Exporter:** `http://localhost:9115`
 
 ---
 

@@ -42,3 +42,44 @@ scrape_configs:
     static_configs:
       - targets: ['cadvisor:8080']
 
+  # ----------------------------------------------------------------------------
+  # 4. Blackbox HTTP: Kiểm tra sẵn sàng các endpoint HTTP (2xx)
+  # ----------------------------------------------------------------------------
+  - job_name: 'blackbox-http'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+          - http://backend:8000
+          - http://frontend:3000
+          - http://prometheus:9090
+          - http://grafana:3001
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+  # ----------------------------------------------------------------------------
+  # 5. Blackbox TCP: Kiểm tra kết nối TCP tới các cổng dịch vụ
+  # ----------------------------------------------------------------------------
+  - job_name: 'blackbox-tcp'
+    metrics_path: /probe
+    params:
+      module: [tcp_connect]
+    static_configs:
+      - targets:
+          - node-exporter:9100
+          - cadvisor:8080
+          - alertmanager:9093
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
