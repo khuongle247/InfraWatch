@@ -1,0 +1,67 @@
+# ==============================================================================
+# Prometheus Alert Rules — Host / Node Exporter (InfraWatch N4.7)
+# File: infrastructure/prometheus/rules/host_alerts.yml
+# ==============================================================================
+
+groups:
+  - name: host_alerts
+    rules:
+      # ------------------------------------------------------------------------
+      # 1. CPU sử dụng cao trên máy chủ (Warning > 85% trong 2 phút)
+      # ------------------------------------------------------------------------
+      - alert: HostHighCpuUsage
+        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 85
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU cao trên {{ $labels.instance }}"
+          description: "Mức sử dụng CPU trên {{ $labels.instance }} vượt quá 85% trong 2 phút."
+
+      # ------------------------------------------------------------------------
+      # 2. RAM sử dụng cao trên máy chủ (Critical > 90% trong 2 phút)
+      # ------------------------------------------------------------------------
+      - alert: HostHighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 90
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "RAM cao trên {{ $labels.instance }}"
+          description: "Mức sử dụng RAM trên {{ $labels.instance }} vượt quá 90% trong 2 phút."
+
+      # ------------------------------------------------------------------------
+      # 3. Ổ cứng gần đầy (Warning > 85% trong 2 phút)
+      # ------------------------------------------------------------------------
+      - alert: HostDiskSpaceFilling
+        expr: (1 - (node_filesystem_free_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"})) * 100 > 85
+        for: 2m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Dung lượng ổ cứng thấp trên {{ $labels.instance }}"
+          description: "Phân vùng / trên {{ $labels.instance }} sử dụng vượt quá 85% trong 2 phút."
+
+      # ------------------------------------------------------------------------
+      # 4. Ổ cứng cực kỳ đầy (Critical > 95% trong 1 phút)
+      # ------------------------------------------------------------------------
+      - alert: HostDiskSpaceCritical
+        expr: (1 - (node_filesystem_free_bytes{mountpoint="/"} / node_filesystem_size_bytes{mountpoint="/"})) * 100 > 95
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Dung lượng ổ cứng cực kỳ thấp trên {{ $labels.instance }}"
+          description: "Phân vùng / trên {{ $labels.instance }} sử dụng vượt quá 95% trong 1 phút."
+
+      # ------------------------------------------------------------------------
+      # 5. Node Exporter mất kết nối (Critical trong 1 phút)
+      # ------------------------------------------------------------------------
+      - alert: NodeExporterDown
+        expr: up{job="node-exporter"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Node Exporter DOWN trên {{ $labels.instance }}"
+          description: "Target node-exporter tại {{ $labels.instance }} không phản hồi trong 1 phút."
