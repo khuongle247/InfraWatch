@@ -34,6 +34,9 @@ scrape_configs:
   - job_name: 'node-exporter'
     static_configs:
       - targets: ['node-exporter:9100']
+    relabel_configs:
+      - target_label: hostname
+        replacement: 'InfraWatch-server'
 
   # ----------------------------------------------------------------------------
   # 3. cAdvisor: Thu thập chỉ số tài nguyên chi tiết từng Docker Container

@@ -16,8 +16,8 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "CPU cao trên {{ $labels.instance }}"
-          description: "Mức sử dụng CPU trên {{ $labels.instance }} vượt quá 80% liên tục trong 5 phút."
+          summary: "CPU cao trên máy chủ {{ $labels.hostname }}"
+          description: "Máy chủ {{ $labels.hostname }} (instance: {{ $labels.instance }}): CPU sử dụng vượt quá 80% liên tục trong 5 phút."
 
       # ------------------------------------------------------------------------
       # 1.1. CPU sử dụng cao — Critical (> 90% trong 2 phút)
@@ -28,8 +28,8 @@ groups:
         labels:
           severity: critical
         annotations:
-          summary: "CPU Critical trên {{ $labels.instance }}"
-          description: "Mức sử dụng CPU trên {{ $labels.instance }} vượt quá 90% trong 2 phút."
+          summary: "CPU Critical trên máy chủ {{ $labels.hostname }}"
+          description: "Máy chủ {{ $labels.hostname }} (instance: {{ $labels.instance }}): CPU sử dụng vượt quá 90% trong 2 phút."
 
       # ------------------------------------------------------------------------
       # 1.2. RAM sử dụng cao — Warning (> 85%)
@@ -40,8 +40,8 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "RAM cao trên {{ $labels.instance }}"
-          description: "Mức sử dụng RAM trên {{ $labels.instance }} vượt quá 85%."
+          summary: "RAM cao trên máy chủ {{ $labels.hostname }}"
+          description: "Máy chủ {{ $labels.hostname }} (instance: {{ $labels.instance }}): RAM sử dụng vượt quá 85%."
 
       # ------------------------------------------------------------------------
       # 1.2. RAM sử dụng cao — Critical (> 95%)
@@ -52,8 +52,8 @@ groups:
         labels:
           severity: critical
         annotations:
-          summary: "RAM Critical trên {{ $labels.instance }}"
-          description: "Mức sử dụng RAM trên {{ $labels.instance }} vượt quá 95%."
+          summary: "RAM Critical trên máy chủ {{ $labels.hostname }}"
+          description: "Máy chủ {{ $labels.hostname }} (instance: {{ $labels.instance }}): RAM sử dụng vượt quá 95%."
 
       # ------------------------------------------------------------------------
       # 1.3. Ổ cứng gần đầy — Warning (> 85% trong 2 phút)
@@ -64,8 +64,8 @@ groups:
         labels:
           severity: warning
         annotations:
-          summary: "Dung lượng ổ cứng thấp trên {{ $labels.instance }}"
-          description: "Phân vùng / trên {{ $labels.instance }} sử dụng vượt quá 85% trong 2 phút."
+          summary: "Ổ cứng thấp trên máy chủ {{ $labels.hostname }}"
+          description: "Máy chủ {{ $labels.hostname }} (instance: {{ $labels.instance }}): phân vùng / sử dụng vượt quá 85% trong 2 phút."
 
       # ------------------------------------------------------------------------
       # 1.3. Ổ cứng cực kỳ đầy — Critical (> 95% trong 1 phút)
@@ -76,8 +76,8 @@ groups:
         labels:
           severity: critical
         annotations:
-          summary: "Dung lượng ổ cứng cực kỳ thấp trên {{ $labels.instance }}"
-          description: "Phân vùng / trên {{ $labels.instance }} sử dụng vượt quá 95% trong 1 phút."
+          summary: "Ổ cứng cực kỳ thấp trên máy chủ {{ $labels.hostname }}"
+          description: "Máy chủ {{ $labels.hostname }} (instance: {{ $labels.instance }}): phân vùng / sử dụng vượt quá 95% trong 1 phút."
 
       # ------------------------------------------------------------------------
       # Node Exporter mất kết nối — Critical (trong 1 phút)
@@ -88,5 +88,5 @@ groups:
         labels:
           severity: critical
         annotations:
-          summary: "Node Exporter DOWN trên {{ $labels.instance }}"
+          summary: "Node Exporter DOWN trên máy chủ {{ $labels.hostname }}"
           description: "Target node-exporter tại {{ $labels.instance }} không phản hồi trong 1 phút."
