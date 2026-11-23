@@ -11,7 +11,7 @@ groups:
       # 1.1. CPU sử dụng cao — Warning (> 80% liên tục trong 5 phút)
       # ------------------------------------------------------------------------
       - alert: HostHighCpuUsageWarning
-        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 80
         for: 5m
         labels:
           severity: warning
@@ -23,7 +23,7 @@ groups:
       # 1.1. CPU sử dụng cao — Critical (> 90% trong 2 phút)
       # ------------------------------------------------------------------------
       - alert: HostHighCpuUsageCritical
-        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 90
+        expr: 100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[1m])) * 100) > 90
         for: 2m
         labels:
           severity: critical

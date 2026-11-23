@@ -10,7 +10,7 @@ groups:
       # 1. CPU container sử dụng cao (Warning > 1 core trong 2 phút)
       # ------------------------------------------------------------------------
       - alert: ContainerHighCpuUsage
-        expr: sum by (name) (rate(container_cpu_usage_seconds_total{name!=""}[5m])) > 1
+        expr: sum by (name) (rate(container_cpu_usage_seconds_total{name!=""}[1m])) > 1
         for: 2m
         labels:
           severity: warning
