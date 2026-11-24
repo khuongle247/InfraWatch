@@ -1,0 +1,46 @@
+# Danh mục Kịch bản Kiểm thử Chi tiết (Test Cases) — InfraWatch (N4.7)
+
+Tài liệu này mô tả chi tiết điều kiện tiên quyết, các bước thực hiện, dữ liệu đầu vào và kết quả kỳ vọng cho các kịch bản kiểm thử chức năng, tích hợp, đối chiếu dữ liệu và chịu lỗi của hệ thống **InfraWatch**.
+
+> **Trạng thái tài liệu (`[Draft - Part 1/2]`):** Phiên bản hiện tại bao gồm **16 kịch bản cố định** (Hạ tầng/Bảo mật, REST API Contract và Đối chiếu 3 nguồn dữ liệu). Nhóm kịch bản Chaos, Boundary & Hiệu năng (`TC-CHAOS-01..05`, `TC-PERF-01..03`) sẽ được bổ sung tiếp và đồng bộ ngưỡng định lượng ngay khi bản SRS hoàn chỉnh được ban hành.
+
+---
+
+## 1. Nhóm Kiểm thử Hạ tầng, Triển khai & Bảo mật (`TC-INFRA` & `TC-SEC`)
+
+| Mã TC | Tên Kịch bản & Yêu cầu Liên kết | Điều kiện Tiên quyết | Các bước Thực hiện | Kết quả Kỳ vọng (Expected Result) |
+| :--- | :--- | :--- | :--- | :--- |
+| **TC-INFRA-01** | Khởi chạy toàn bộ stack dịch vụ bằng Docker Compose<br>*(FR-DS-01, NFR-REL-01)* | Đã cấu hình file `.env` hợp lệ từ `.env.example`; các cổng `3000, 3001, 8000, 8080, 9090, 9093, 9100` trống. | 1. Chạy `docker compose up -d`.<br>2. Chạy `./scripts/health-check.sh` và `docker compose ps`.<br>3. Chạy `docker inspect` kiểm tra cấu hình restart policy và tham số Prometheus. | - Toàn bộ 7/7 container ở trạng thái `running` hoặc `healthy`.<br>- Tất cả container đều có `RestartPolicy.Name == "unless-stopped"`.<br>- Prometheus chạy với `--storage.tsdb.retention.time=15d`. |
+| **TC-INFRA-02** | Kiểm tra Prometheus thu thập metrics Host Linux<br>*(FR-DC-01)* | Stack Docker Compose đang hoạt động; `node-exporter` đang chạy. | 1. Gửi `GET http://localhost:9090/api/v1/targets`.<br>2. Truy vấn PromQL `up{job="node-exporter"}` và `node_cpu_seconds_total` trên `:9090`. | - Target `node-exporter` có trạng thái `health == "up"`, `lastError == ""`.<br>- Chu kỳ thu thập `scrapeInterval == "15s"`, dữ liệu cập nhật đều đặn. |
+| **TC-INFRA-03** | Kiểm tra Prometheus thu thập metrics Docker Containers<br>*(FR-DC-02)* | Stack Docker Compose đang hoạt động; `cadvisor` đang chạy. | 1. Gửi `GET http://localhost:9090/api/v1/targets`.<br>2. Truy vấn PromQL `container_cpu_usage_seconds_total{name!=""}` và `container_memory_working_set_bytes{name!=""}`. | - Target `cadvisor` có trạng thái `health == "up"`.<br>- Trả về đầy đủ series cho các container `infrawatch-*` kèm nhãn `name` hợp lệ.<br>- Đảm bảo nhãn `name` không bị rỗng trên phiên bản `cAdvisor v0.61.1`. |
+| **TC-INFRA-04** | Kiểm tra tự động nạp Datasource & Dashboard trên Grafana<br>*(FR-UI-04)* | Container `infrawatch-grafana` đang chạy tại cổng `3001`. | 1. Đăng nhập Grafana bằng tài khoản quản trị trong `.env`.<br>2. Vào *Connections -> Data sources* và *Dashboards*. | - Datasource `Prometheus` (`http://prometheus:9090`) đã được provisioning sẵn và test kết nối trả về `Data source is working`.<br>- Các dashboard mẫu hiển thị dữ liệu thực tế, không báo lỗi `No data`. |
+| **TC-SEC-01** | Kiểm tra rò rỉ thông tin nhạy cảm & quy tắc `.gitignore`<br>*(NFR-SEC-01, NFR-SEC-02)* | Có quyền truy cập repository Git cục bộ. | 1. Kiểm tra danh sách file tracked bằng `git ls-files`.<br>2. Quét từ khóa nhạy cảm (`BOT_TOKEN`, `PASSWORD`, `.env`) trong lịch sử commit.<br>3. Kiểm tra nội dung `.gitignore`. | - Không tồn tại file `.env` thật hay token/mật khẩu thật trong mã nguồn và lịch sử Git.<br>- `.gitignore` chặn đầy đủ `.env`, `*.log`, `evidence/*`, `*.img`, `*.iso`. |
+| **TC-SEC-02** | Kiểm tra khóa truy cập ẩn danh trên Grafana<br>*(NFR-SEC-03)* | Container `infrawatch-grafana` đang chạy. | 1. Mở trình duyệt ẩn danh truy cập `http://localhost:3001`.<br>2. Kiểm tra trang đăng nhập và thử truy cập đường dẫn `/signup`. | - Hệ thống tự động chuyển hướng về trang `/login`.<br>- Nút đăng ký tài khoản mới (`Sign up`) bị ẩn hoàn toàn (`GF_USERS_ALLOW_SIGN_UP=false`). |
+
+---
+
+## 2. Nhóm Kiểm thử Backend REST API Contract (`TC-API`)
+
+Bám sát đặc tả 5 endpoints tại `docs/api/API_CONTRACT.md` (Base URL: `http://localhost:8000`, định dạng `application/json` UTF-8):
+
+| Mã TC | Endpoint & Mục tiêu | Điều kiện Tiên quyết | Bước Thực hiện & Input | Kết quả Kỳ vọng (Expected Result) |
+| :--- | :--- | :--- | :--- | :--- |
+| **TC-API-01** | `GET /health`<br>Kiểm tra liveness của Backend API | `infrawatch-backend` đang chạy ở cổng `8000`. | Gửi `GET http://localhost:8000/health` (không tham số). | - HTTP Status: `200 OK`.<br>- JSON chứa đủ các trường: `status == "healthy"`, `service`, `version`, `environment`. |
+| **TC-API-02** | `GET /api/v1/metrics/overview`<br>Kiểm tra dữ liệu tổng quan hạ tầng *(FR-DS-02)* | Prometheus và Alertmanager đang hoạt động bình thường. | Gửi `GET http://localhost:8000/api/v1/metrics/overview`. | - HTTP Status: `200 OK`.<br>- JSON trả về cấu trúc số đếm nguyên $\ge 0$ cho `hosts` (`total`, `up`, `down`), `containers` (`total`, `running`, `stopped`) và `alerts` (`critical`, `warning`, `info`). |
+| **TC-API-03** | `GET /api/v1/hosts`<br>Kiểm tra danh sách máy chủ Linux *(FR-UI-01)* | `node-exporter` ở trạng thái `UP` trên Prometheus. | Gửi `GET http://localhost:8000/api/v1/hosts`. | - HTTP Status: `200 OK`.<br>- Trả về mảng JSON $\ge 1$ phần tử; mỗi object có đủ `instance`, `hostname`, `status` (`"UP"`/`"DOWN"`), `cpu_usage_percent` ($0..100$), `memory_used_bytes` ($>0$), `disk_used_percent` ($0..100$), `uptime_seconds` ($>0$). |
+| **TC-API-04** | `GET /api/v1/containers`<br>Kiểm tra danh sách Docker containers *(FR-UI-02)* | `cadvisor` ở trạng thái `UP` và có các container InfraWatch đang chạy. | Gửi `GET http://localhost:8000/api/v1/containers`. | - HTTP Status: `200 OK`.<br>- Trả về mảng JSON các container; mỗi phần tử có đủ `container_id`, `name`, `image`, `cpu_cores` ($\ge 0$), `memory_working_set_bytes` ($>0$), `network_rx_bytes` ($\ge 0$), `status`. |
+| **TC-API-05** | `GET /api/v1/alerts/active`<br>Kiểm tra danh sách cảnh báo đang firing *(FR-UI-03)* | Alertmanager đang chạy (test cả lúc hệ thống bình thường và lúc có 1 cảnh báo đang `firing`). | Gửi `GET http://localhost:8000/api/v1/alerts/active`. | - HTTP Status: `200 OK`.<br>- Khi không có sự cố: trả về mảng rỗng `[]`.<br>- Khi có sự cố: mỗi phần tử có đủ `fingerprint`, `alertname`, `severity`, `instance`, `summary`, `starts_at` (ISO-8601), `state == "firing"`. |
+| **TC-API-06** | Kiểm thử tham số không hợp lệ & tài nguyên không tồn tại<br>*(Negative API Test)* | `infrawatch-backend` đang chạy bình thường. | 1. Gửi request kèm query parameter sai kiểu dữ liệu (VD: `?limit=invalid`).<br>2. Gửi request tới đường dẫn hoặc ID không tồn tại (`/api/v1/hosts/unknown-host-999`). | - Trường hợp 1: Trả về HTTP `400 Bad Request` (hoặc `422` theo chuẩn FastAPI) kèm thông báo lỗi rõ ràng, không lộ stack trace.<br>- Trường hợp 2: Trả về HTTP `404 Not Found`. |
+| **TC-API-07** | Kiểm thử cô lập lỗi khi mất kết nối Prometheus<br>*(Resilience API Test)* | Hệ thống đang chạy đầy đủ 7 containers. | 1. Tạm dừng Prometheus: `docker compose stop prometheus`.<br>2. Gọi `GET /api/v1/hosts` và `GET /health`.<br>3. Khôi phục ngay: `docker compose start prometheus`. | - `GET /api/v1/hosts` trả về HTTP `500 Internal Server Error` với mã lỗi chuẩn hóa `PROMETHEUS_UNAVAILABLE` (không treo timeout).<br>- `GET /health` vẫn trả về `200 OK`.<br>- Sau khi khởi động lại Prometheus, `/api/v1/hosts` hoạt động bình thường. |
+
+---
+
+## 3. Nhóm Kiểm thử Đối chiếu 3 Nguồn Dữ liệu (`TC-DATA`)
+
+Nguyên tắc kiểm chứng: Tại cùng một thời điểm ($t$), đối chiếu chéo số liệu giữa **Nguồn 1: PromQL gốc (`:9090`)** $\leftrightarrow$ **Nguồn 2: Backend API JSON (`:8000`)** $\leftrightarrow$ **Nguồn 3: Web Dashboard (`:3000`) / Grafana (`:3001`)**.
+
+| Mã TC | Đối tượng Đối chiếu | Công thức / Endpoint Đối chiếu | Điều kiện ĐẠT (Pass Criteria) |
+| :--- | :--- | :--- | :--- |
+| **TC-DATA-01** | Chỉ số tài nguyên Host (`CPU %`, `RAM`, `Disk %`)<br>*(FR-DC-01, FR-UI-01)* | - **PromQL:** `100 - (avg by (instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100)` và công thức RAM/Disk trong `KPI_DEFINITIONS.md`.<br>- **API:** `GET /api/v1/hosts`.<br>- **UI:** Bảng danh sách Host trên React Dashboard & Grafana. | - Giá trị giữa 3 nguồn khớp nhau với sai số làm tròn cho phép **$\Delta \le 0.1\%$**.<br>- Độ trễ cập nhật dữ liệu mới trên UI so với Prometheus **$\Delta t \le 15\text{s}$** (1 chu kỳ scrape). |
+| **TC-DATA-02** | Chỉ số tài nguyên Container (`CPU cores`, `Memory Working Set`)<br>*(FR-DC-02, FR-UI-02)* | - **PromQL:** `sum by (name) (rate(container_cpu_usage_seconds_total{name!=""}[5m]))` và `container_memory_working_set_bytes{name!=""}`.<br>- **API:** `GET /api/v1/containers`.<br>- **UI:** Danh sách Container trên React Dashboard. | - Tên container (`name`), trạng thái chạy và giá trị RAM/CPU khớp nhau giữa 3 nguồn với sai số **$\Delta \le 0.1\%$** và độ trễ đồng bộ **$\Delta t \le 15\text{s}$**. |
+| **TC-DATA-03** | Trạng thái & Số lượng Cảnh báo Đang kích hoạt<br>*(FR-AL-03, FR-UI-03)* | - **Alertmanager:** `GET http://localhost:9093/api/v2/alerts`.<br>- **API:** `GET /api/v1/alerts/active` và `GET /api/v1/metrics/overview`.<br>- **UI:** Badge tổng cảnh báo và danh sách Active Alerts trên React Dashboard. | - Khớp **100%** về số lượng cảnh báo, tên rule (`alertname`), mức độ (`severity`), đối tượng (`instance`) và thời điểm kích hoạt (`starts_at`). |
