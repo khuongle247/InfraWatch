@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="Wireframe W03 cho Host Monitoring InfraWatch — dữ liệu minh họa.">
+  <title>InfraWatch — Host Monitoring wireframe (W03)</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, "Segoe UI", Arial, sans-serif;
+      color: #edf2ff;
+      background: #0b1020;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+      --surface: #111a2d;
+      --border: #273550;
+      --muted: #a6b3ca;
+      --blue: #91a3ff;
+      --mint: #58dfc0;
+      --amber: #ffc078;
+      --red: #ff829b;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-width: 320px; background: radial-gradient(ellipse at 70% -15%, #273b7440, transparent 38rem), #0b1020; }
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; clip-path: inset(50%); }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #aebcff; outline-offset: 3px; }
+    .shell { min-height: 100vh; display: grid; grid-template-columns: 248px minmax(0, 1fr); }
+    .sidebar { display: flex; flex-direction: column; gap: 28px; padding: 26px 16px 18px; border-right: 1px solid #202b42; background: #0d1424; }
+    .brand { display: flex; align-items: center; gap: 12px; padding: 0 7px; }
+    .brand-mark { width: 40px; height: 40px; display: grid; place-items: center; border-radius: 13px; color: #fff; background: linear-gradient(145deg, #7189ff, #485de0); box-shadow: 0 10px 24px #516ee833; font-weight: 800; font-size: 19px; }
+    .brand-name { font-size: 17px; font-weight: 750; letter-spacing: -.5px; }
+    .brand-caption { display: block; margin-top: 4px; color: #91a1c0; font-size: 9px; letter-spacing: 1.5px; }
+    .nav-label { padding: 0 12px; color: #8191ae; font-size: 10px; font-weight: 700; letter-spacing: 1.5px; }
+    .nav { display: grid; gap: 6px; margin-top: -18px; }
+    .nav-link { display: flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 13px; color: #aab6cd; border: 1px solid transparent; border-radius: 10px; font-size: 13px; }
+    .nav-link:hover { background: #17233a; }
+    .nav-link[aria-current="page"] { color: #f2f5ff; background: #202e50; border-color: #354a79; }
+    .nav-placeholder { opacity: .8; cursor: default; }
+    .nav-icon { width: 18px; text-align: center; color: #9cadca; font-size: 16px; }
+    .sidebar-bottom { margin-top: auto; padding: 15px; border: 1px solid var(--border); border-radius: 13px; background: linear-gradient(145deg, #15213a, #111a2d); }
+    .sidebar-bottom small { color: #a1afc8; font-size: 11px; }
+    .sidebar-bottom strong { display: block; margin: 7px 0 4px; font-size: 13px; }
+    .main { min-width: 0; }
+    .topbar { height: 68px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 clamp(20px, 3.2vw, 48px); border-bottom: 1px solid #202b42; background: #0c1322cc; }
+    .breadcrumb { color: #a8b5cc; font-size: 12px; }
+    .top-actions { display: flex; align-items: center; gap: 10px; }
+    .demo-tag { display: inline-flex; align-items: center; gap: 8px; padding: 8px 11px; color: #84ecd1; border: 1px solid #226153; border-radius: 999px; background: #10332d; font-size: 10px; font-weight: 800; letter-spacing: .8px; white-space: nowrap; }
+    .demo-tag::before { width: 7px; height: 7px; border-radius: 50%; background: currentColor; content: ""; }
+    .button { min-height: 38px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 13px; color: #e8edfa; border: 1px solid #344360; border-radius: 9px; background: #17233a; font-size: 12px; font-weight: 650; cursor: pointer; }
+    .button-primary { border-color: #6075de; background: linear-gradient(120deg, #657ceb, #5065d1); }
+    .button:disabled { opacity: .8; cursor: not-allowed; }
+    .mobile-nav { display: none; }
+    .page { width: min(1540px, 100%); margin: 0 auto; padding: 28px clamp(20px, 3.2vw, 48px) 40px; }
+    .notice { display: flex; align-items: flex-start; gap: 10px; padding: 12px 15px; color: #c4d2ec; border: 1px solid #314363; border-radius: 10px; background: #131f34; font-size: 12px; line-height: 1.5; }
+    .notice strong { color: #e0e8fa; }
+    .heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; margin: 27px 0 19px; }
+    .eyebrow { color: #a0b0ff; font-size: 10px; font-weight: 750; letter-spacing: 1.6px; }
+    h1 { margin: 8px 0 5px; font-size: clamp(26px, 3vw, 36px); letter-spacing: -1.15px; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 13px; }
+    .host-select { min-width: 230px; padding: 10px 12px; color: #e8edfa; border: 1px solid #3a4c69; border-radius: 9px; background: #162239; font-size: 12px; }
+    .summary { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 18px; padding: 13px 15px; color: #c2cde0; border: 1px solid #2d3d58; border-radius: 11px; background: #121d30; font-size: 11px; }
+    .health { display: inline-flex; align-items: center; gap: 8px; color: var(--amber); font-weight: 750; }
+    .health::before { width: 8px; height: 8px; border-radius: 50%; background: currentColor; content: ""; }
+    .summary strong { color: #edf2ff; }
+    .summary time { margin-left: auto; color: #a9b6cb; }
+    .metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 13px; margin-top: 15px; }
+    .card { min-width: 0; border: 1px solid var(--border); border-radius: 13px; background: linear-gradient(155deg, #151f34, #111a2a); }
+    .metric { padding: 16px 17px; }
+    .metric-label { color: #b2bfd4; font-size: 11px; }
+    .metric-value { display: flex; align-items: baseline; gap: 5px; margin-top: 10px; font-size: 27px; font-weight: 750; letter-spacing: -.7px; }
+    .metric-value small { color: #aab7cc; font-size: 11px; font-weight: 550; letter-spacing: 0; }
+    .metric-footer { display: flex; align-items: center; justify-content: space-between; gap: 7px; margin-top: 9px; color: #a6b3c9; font-size: 10px; }
+    .metric-line { height: 4px; margin-top: 13px; overflow: hidden; border-radius: 9px; background: #34415a; }
+    .metric-line i { height: 100%; display: block; border-radius: inherit; background: #91a3ff; }
+    .metric-memory .metric-line i { background: #b496ff; }
+    .metric-disk .metric-line i { background: #58dfc0; }
+    .metric-network .metric-line i { background: #ffc078; }
+    .layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(280px, .85fr); gap: 15px; margin-top: 15px; }
+    .panel-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 18px 19px 0; }
+    .panel-heading h2, .section-heading h2 { margin: 0; font-size: 14px; }
+    .panel-heading p, .section-heading p { margin: 5px 0 0; color: var(--muted); font-size: 10px; }
+    .tabs { display: flex; gap: 4px; padding: 3px; border: 1px solid #34425d; border-radius: 8px; background: #111a2b; }
+    .tab { padding: 6px 9px; color: #b1bed3; border-radius: 6px; font-size: 10px; }
+    .tab.active { color: white; background: #344774; }
+    .chart-legend { display: flex; gap: 14px; padding: 15px 19px 0; color: #b5c1d5; font-size: 10px; }
+    .legend { display: flex; align-items: center; gap: 6px; }
+    .legend i { width: 8px; height: 8px; border-radius: 50%; background: #91a3ff; }
+    .legend:nth-child(2) i { background: #b496ff; }
+    .legend:nth-child(3) i { background: #58dfc0; }
+    .chart { width: 100%; height: auto; display: block; padding: 6px 13px; }
+    .gridline { stroke: #34425c; stroke-dasharray: 4 7; }
+    .axis { fill: #aab7cc; font: 10px Inter, Arial, sans-serif; }
+    .chart-note { padding: 0 18px 14px; color: #aab7cc; font-size: 10px; }
+    .detail-list { display: grid; gap: 0; padding: 9px 18px 14px; }
+    .detail-row { display: flex; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid #29364d; font-size: 11px; }
+    .detail-row:last-child { border: 0; }
+    .detail-row span:first-child { color: #aebad0; }
+    .detail-row strong { text-align: right; }
+    .section { margin-top: 15px; overflow: hidden; }
+    .section-heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 17px 19px 13px; }
+    .section-heading .hint { color: #a8b4c9; font-size: 10px; }
+    .table-scroll { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th, td { padding: 12px 17px; border-top: 1px solid #29364d; }
+    th { color: #aab7cd; font-size: 9px; font-weight: 750; letter-spacing: 1px; }
+    td { color: #e2e9f7; font-size: 11px; }
+    td small { display: block; margin-top: 4px; color: #a6b3ca; font-size: 10px; }
+    .interface { color: #aebbd1; }
+    .footnote { margin: 14px 2px 0; color: #a6b2c7; font-size: 10px; line-height: 1.55; }
+    @media (max-width: 1050px) {
+      .shell { grid-template-columns: 76px minmax(0, 1fr); }
+      .sidebar { align-items: center; padding-inline: 9px; }
+      .brand { padding: 0; }
+      .brand-copy, .nav-label, .sidebar .nav-link span:not(.nav-icon), .sidebar-bottom { display: none; }
+      .nav { width: 100%; }
+      .nav-link { justify-content: center; padding: 0; }
+      .layout { grid-template-columns: minmax(0, 1fr); }
+    }
+    @media (max-width: 700px) {
+      .shell { display: block; }
+      .sidebar { display: none; }
+      .topbar { height: 60px; padding-inline: 16px; }
+      .mobile-nav { display: flex; gap: 8px; overflow-x: auto; padding: 9px 16px; border-bottom: 1px solid #202b42; background: #0e1626; }
+      .mobile-nav .nav-link { min-height: 36px; flex: 0 0 auto; padding-inline: 12px; }
+      .mobile-nav .nav-placeholder { display: flex; }
+      .page { padding: 18px 16px 30px; }
+      .heading { flex-direction: column; margin: 21px 0 16px; }
+      .host-select { width: 100%; }
+      .summary time { width: 100%; margin-left: 0; }
+      .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+      .metric { padding: 13px; }
+      .metric-value { font-size: 24px; }
+      .section-heading { align-items: flex-start; flex-direction: column; }
+      table { min-width: 680px; }
+      .demo-tag { font-size: 9px; }
+    }
+    @media (max-width: 390px) { .metric-grid { grid-template-columns: 1fr; } .top-actions { gap: 6px; } .top-actions .button { padding-inline: 9px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Điều hướng ứng dụng">
+      <a class="brand" href="overview-wireframe.html" aria-label="InfraWatch, về Tổng quan"><span class="brand-mark" aria-hidden="true">I</span><span class="brand-copy"><span class="brand-name">InfraWatch</span><span class="brand-caption">OBSERVABILITY PLATFORM</span></span></a>
+      <div class="nav-label">WORKSPACE</div>
+      <nav class="nav" aria-label="Điều hướng chính">
+        <a class="nav-link" href="overview-wireframe.html"><span class="nav-icon" aria-hidden="true">◫</span><span>Tổng quan</span></a>
+        <a class="nav-link" href="hosts-wireframe.html" aria-current="page"><span class="nav-icon" aria-hidden="true">▤</span><span>Máy chủ</span></a>
+        <span class="nav-link nav-placeholder" aria-disabled="true"><span class="nav-icon" aria-hidden="true">⬡</span><span>Containers · W03 chưa phác thảo</span></span>
+        <span class="nav-link nav-placeholder" aria-disabled="true"><span class="nav-icon" aria-hidden="true">⌁</span><span>Dịch vụ · W03 chưa phác thảo</span></span>
+        <span class="nav-link nav-placeholder" aria-disabled="true"><span class="nav-icon" aria-hidden="true">♧</span><span>Cảnh báo · W03 chưa phác thảo</span></span>
+      </nav>
+      <div class="sidebar-bottom"><small>DEMO ENVIRONMENT</small><strong>Infrastructure Lab</strong><small>UTH × VNPT NET · N4.7</small></div>
+    </aside>
+    <main class="main">
+      <header class="topbar"><div class="breadcrumb"><a href="overview-wireframe.html">Tổng quan</a> <span aria-hidden="true">/</span> <strong>Máy chủ</strong></div><div class="top-actions"><span class="demo-tag">DEMO · DỮ LIỆU MÔ PHỎNG</span><button class="button" type="button" disabled aria-label="Nút làm mới minh họa, wireframe tĩnh">↻ <span>Làm mới</span></button></div></header>
+      <nav class="mobile-nav" aria-label="Điều hướng wireframe"><a class="nav-link" href="overview-wireframe.html">Tổng quan</a><a class="nav-link" href="hosts-wireframe.html" aria-current="page">Máy chủ</a></nav>
+      <div class="page">
+        <div class="notice" role="note"><span aria-hidden="true">ⓘ</span><span><strong>Wireframe W03 · Host Monitoring.</strong> Màn hình chi tiết theo host dựa trên phạm vi Project Plan; số liệu là minh họa, chưa kết nối API/Prometheus.</span></div>
+        <section class="heading" aria-labelledby="page-title">
+          <div><div class="eyebrow">INFRAWATCH / HOST INVENTORY / DETAIL</div><h1 id="page-title">Giám sát máy chủ</h1><p class="subtitle">Đi sâu từ trạng thái host tới xu hướng tài nguyên và thông tin hệ thống.</p></div>
+          <label><span class="visually-hidden">Host đang được chọn (wireframe)</span><select class="host-select" aria-label="Host đang được chọn trong wireframe" disabled><option>lab-app-02 · Application server</option></select></label>
+        </section>
+        <div class="summary" role="status"><span class="health">Cần theo dõi · DEMO</span><span>Host <strong>lab-app-02</strong></span><span>Lab / Zone A</span><span>192.0.2.24</span><span>Wireframe demo · 24/11/2026</span></div>
+        <section class="metric-grid" aria-label="Tài nguyên máy chủ (demo)">
+          <article class="card metric"><div class="metric-label">CPU utilization</div><div class="metric-value warning">76<small>%</small></div><div class="metric-footer"><span>Mức sử dụng mô phỏng</span><strong>DEMO</strong></div><div class="metric-line" role="img" aria-label="CPU utilization mẫu 76 phần trăm"><i style="width:76%"></i></div></article>
+          <article class="card metric metric-memory"><div class="metric-label">Memory utilization</div><div class="metric-value">71<small>%</small></div><div class="metric-footer"><span>Available</span><strong>2.3 / 8 GB</strong></div><div class="metric-line" role="img" aria-label="Memory utilization mẫu 71 phần trăm"><i style="width:71%"></i></div></article>
+          <article class="card metric metric-disk"><div class="metric-label">Disk utilization</div><div class="metric-value">58<small>%</small></div><div class="metric-footer"><span>Root filesystem</span><strong>116 / 200 GB</strong></div><div class="metric-line" role="img" aria-label="Disk utilization mẫu 58 phần trăm"><i style="width:58%"></i></div></article>
+          <article class="card metric metric-network"><div class="metric-label">Network I/O</div><div class="metric-value">84<small>Mb/s</small></div><div class="metric-footer"><span>In / Out</span><strong>52 / 32 Mb/s</strong></div><div class="metric-line" role="img" aria-label="Network traffic minh họa"><i style="width:61%"></i></div></article>
+        </section>
+        <section class="layout" aria-label="Lịch sử tài nguyên và thông tin host">
+          <article class="card">
+            <div class="panel-heading"><div><h2>Resource history</h2><p>Chuỗi thời gian theo host · các đường biểu diễn là dữ liệu demo</p></div><div class="tabs" aria-label="Khoảng thời gian minh họa"><span class="tab">1H</span><span class="tab active">6H</span><span class="tab">24H</span></div></div>
+            <div class="chart-legend"><span class="legend"><i aria-hidden="true"></i>CPU</span><span class="legend"><i aria-hidden="true"></i>Memory</span><span class="legend"><i aria-hidden="true"></i>Disk</span></div>
+            <svg class="chart" viewBox="0 0 720 270" role="img" aria-labelledby="host-chart-title host-chart-desc">
+              <title id="host-chart-title">Lịch sử tài nguyên mẫu cho lab-app-02</title><desc id="host-chart-desc">Biểu đồ minh họa CPU, Memory và Disk trong sáu giờ. Không phải metrics thật.</desc>
+              <g class="gridline"><path d="M58 25H700M58 77H700M58 129H700M58 181H700M58 233H700"/></g>
+              <g class="axis"><text x="10" y="29">100%</text><text x="19" y="81">75%</text><text x="19" y="133">50%</text><text x="19" y="185">25%</text><text x="27" y="237">0%</text><text x="58" y="256">08:30</text><text x="215" y="256">10:00</text><text x="375" y="256">11:30</text><text x="535" y="256">13:00</text><text x="663" y="256">14:30</text></g>
+              <path d="M58 105 C100 111 116 84 158 95 S217 120 258 104 S317 81 358 98 S417 123 458 107 S517 69 558 91 S617 106 658 82 S687 89 700 77" fill="none" stroke="#91a3ff" stroke-width="4" stroke-linecap="round"/>
+              <path d="M58 91 C101 88 116 98 158 93 S217 84 258 89 S317 82 358 86 S417 80 458 85 S517 78 558 82 S617 75 658 79 S687 74 700 76" fill="none" stroke="#b496ff" stroke-width="4" stroke-linecap="round"/>
+              <path d="M58 147 C101 146 116 145 158 144 S217 141 258 142 S317 140 358 138 S417 139 458 136 S517 134 558 136 S617 131 658 133 S687 130 700 129" fill="none" stroke="#58dfc0" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+            <p class="chart-note">Wireframe đề xuất: lựa chọn host và time range điều khiển cùng một ngữ cảnh truy vấn; cần thống nhất đơn vị và timestamp với API Contract.</p>
+          </article>
+          <article class="card">
+            <div class="panel-heading"><div><h2>Thông tin máy chủ</h2><p>Metadata phục vụ nhận diện và điều tra</p></div></div>
+            <div class="detail-list">
+              <div class="detail-row"><span>Hostname</span><strong>lab-app-02</strong></div>
+              <div class="detail-row"><span>Role</span><strong>Application server</strong></div>
+              <div class="detail-row"><span>Operating system</span><strong>Ubuntu Linux · demo</strong></div>
+              <div class="detail-row"><span>Uptime</span><strong>12d 04h 18m</strong></div>
+              <div class="detail-row"><span>Exporter</span><strong>Node Exporter · sample</strong></div>
+              <div class="detail-row"><span>Monitoring zone</span><strong>Lab / Zone A</strong></div>
+              <div class="detail-row"><span>Sample observation</span><strong style="color:#ffd08f">CPU elevated · demo</strong></div>
+            </div>
+          </article>
+        </section>
+        <section class="card section" aria-labelledby="interfaces-title">
+          <div class="section-heading"><div><h2 id="interfaces-title">Network interfaces</h2><p>Thông lượng theo interface để hỗ trợ điều tra host</p></div><span class="hint">Sample values · DEMO</span></div>
+          <div class="table-scroll"><table><thead><tr><th scope="col">INTERFACE</th><th scope="col">STATE</th><th scope="col">RX RATE</th><th scope="col">TX RATE</th><th scope="col">ERRORS</th></tr></thead><tbody>
+            <tr><td>eth0<small class="interface">Primary · 10.0.1.24</small></td><td><span class="health" style="color:#79e7c7">UP</span></td><td>52.0 Mb/s</td><td>32.0 Mb/s</td><td>0</td></tr>
+            <tr><td>docker0<small class="interface">Container bridge</small></td><td><span class="health" style="color:#79e7c7">UP</span></td><td>8.4 Mb/s</td><td>11.2 Mb/s</td><td>0</td></tr>
+          </tbody></table></div>
+        </section>
+        <p class="footnote">Phạm vi của wireframe: Host Monitoring theo Project Plan (CPU, Memory, Disk, Network, Uptime và lịch sử). Chưa thiết kế container/service/alert screens; sample values cần đối chiếu cấu hình/API trước khi triển khai.</p>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

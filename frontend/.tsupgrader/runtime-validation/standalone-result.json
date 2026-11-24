@@ -1,0 +1,113 @@
+{
+  "planHash": "c8f0d5c5b2cccd0a38fc791a97cec4edf7b2bdb4ace989ded3aded095b24f6c6",
+  "phase": "standalone",
+  "recordedAtUtc": "2026-11-24T11:10:49.6244022Z",
+  "retryCount": 0,
+  "resetBaseline": false,
+  "complete": true,
+  "result": {
+    "setupSucceeded": true,
+    "setupDurationMs": 3930,
+    "setupFailureOutput": null,
+    "assertions": [
+      {
+        "name": "frontend-production-build",
+        "kind": "process",
+        "verificationMethod": "exit-code",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\r\n\u003E infrawatch-frontend@0.1.0 build\r\n\u003E vite build\r\n\r\n\u001B[36mvite v5.4.21 \u001B[32mbuilding for production...\u001B[36m\u001B[39m\r\ntransforming...\r\n\u001B[32m\u2713\u001B[39m 42 modules transformed.\r\nrendering chunks...\r\ncomputing gzip size...\r\n\u001B[2mdist/\u001B[22m\u001B[32mindex.html                 \u001B[39m\u001B[1m\u001B[2m  0.63 kB\u001B[22m\u001B[1m\u001B[22m\u001B[2m \u2502 gzip:  0.42 kB\u001B[22m\r\n\u001B[2mdist/\u001B[22m\u001B[35massets/index-DN0Ba2ZF.css  \u001B[39m\u001B[1m\u001B[2m 32.04 kB\u001B[22m\u001B[1m\u001B[22m\u001B[2m \u2502 gzip:  8.08 kB\u001B[22m\r\n\u001B[2mdist/\u001B[22m\u001B[36massets/index-BdvHxaAd.js   \u001B[39m\u001B[1m\u001B[2m177.71 kB\u001B[22m\u001B[1m\u001B[22m\u001B[2m \u2502 gzip: 56.09 kB\u001B[22m\r\n\u001B[32m\u2713 built in 863ms\u001B[39m\r\n",
+        "durationMs": 2197
+      },
+      {
+        "name": "tests-pass",
+        "kind": "process",
+        "verificationMethod": "test-results",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\r\n\u003E infrawatch-frontend@0.1.0 test\r\n\u003E vitest run\r\n\r\n\r\n\u001B[1m\u001B[46m RUN \u001B[49m\u001B[22m \u001B[36mv3.2.7 \u001B[39m\u001B[90mD:/InfraWatch/frontend\u001B[39m\r\n\r\n \u001B[32m\u2713\u001B[39m src/utils/getDashboardPage.test.js \u001B[2m(\u001B[22m\u001B[2m3 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 6\u001B[2mms\u001B[22m\u001B[39m\r\n\r\n\u001B[2m Test Files \u001B[22m \u001B[1m\u001B[32m1 passed\u001B[39m\u001B[22m\u001B[90m (1)\u001B[39m\r\n\u001B[2m      Tests \u001B[22m \u001B[1m\u001B[32m3 passed\u001B[39m\u001B[22m\u001B[90m (3)\u001B[39m\r\n\u001B[2m   Start at \u001B[22m 18:10:46\r\n\u001B[2m   Duration \u001B[22m 920ms\u001B[2m (transform 31ms, setup 0ms, collect 36ms, tests 6ms, environment 0ms, prepare 389ms)\u001B[22m\r\n\r\n",
+        "durationMs": 3247,
+        "testResults": {
+          "testFramework": "vitest",
+          "runnerDetectedFrom": "package_json",
+          "testsTotal": 3,
+          "testsPassed": 3,
+          "testsFailed": 0,
+          "testsSkipped": 0,
+          "parseFailed": false
+        }
+      },
+      {
+        "name": "dev-server-serves-home",
+        "kind": "http-probe",
+        "verificationMethod": "http-status",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": null,
+        "outputSample": "HTTP 200\n\u003C!doctype html\u003E\n\u003Chtml lang=\u0022vi\u0022\u003E\n\u003Chead\u003E\n  \u003Cscript type=\u0022module\u0022\u003Eimport { injectIntoGlobalHook } from \u0022/@react-refresh\u0022;\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () =\u003E {};\nwindow.$RefreshSig$ = () =\u003E (type) =\u003E type;\u003C/script\u003E\n\n  \u003Cscript type=\u0022module\u0022 src=\u0022/@vite/client\u0022\u003E\u003C/script\u003E\n\n  \u003Cmeta charset=\u0022UTF-8\u0022 /\u003E\n  \u003Clink rel=\u0022icon\u0022 type=\u0022image/svg\u002Bxml\u0022 href=\u0022/infrawatch-mark.svg\u0022 /\u003E\n  \u003Cmeta name=\u0022viewport\u0022 content=\u0022width=device-width, initial-scale=1.0\u0022 /\u003E\n  \u003Cmeta name=\u0022theme-color\u0022 content=\u0022#090f1b\u0022 /\u003E\n  \u003Cmeta name=\u0022description\u0022 content=\u0022InfraWatch \u2014 H\u1EC7 th\u1ED1ng gi\u00E1m s\u00E1t h\u1EA1 t\u1EA7ng, giao di\u1EC7n Overview prototype.\u0022 /\u003E\n  \u003Ctitle\u003EInfraWatch | Infrastructure Overview\u003C/title\u003E\n\u003C/head\u003E\n\u003Cbody\u003E\n  \u003Cdiv id=\u0022root\u0022\u003E\u003C/div\u003E\n  \u003Cscript type=\u0022module\u0022 src=\u0022/src/main.jsx\u0022\u003E\u003C/script\u003E\n\u003C/body\u003E\n\u003C/html\u003E\n\n--- server output ---\n\r\n\u003E infrawatch-frontend@0.1.0 dev\r\n\u003E vite --host 127.0.0.1 --port 5173\r\n\r\n\r\n  \u001B[32m\u001B[1mVITE\u001B[22m v5.4.21\u001B[39m  \u001B[2mready in \u001B[0m\u001B[1m479\u001B[22m\u001B[2m\u001B[0m ms\u001B[22m\r\n\r\n  \u001B[32m\u279C\u001B[39m  \u001B[1mLocal\u001B[22m:   \u001B[36mhttp://127.0.0.1:\u001B[1m5173\u001B[22m/\u001B[39m\r\n",
+        "durationMs": 1649
+      }
+    ],
+    "executions": [
+      {
+        "source": "setup[0]",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "ci"
+        ],
+        "cwd": "D:\\InfraWatch\\frontend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "frontend-production-build",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "run",
+          "build"
+        ],
+        "cwd": "D:\\InfraWatch\\frontend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "tests-pass",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "test"
+        ],
+        "cwd": "D:\\InfraWatch\\frontend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      },
+      {
+        "source": "dev-server-serves-home",
+        "resolvedExecutable": "C:\\Program Files\\nodejs\\npm.CMD",
+        "args": [
+          "run",
+          "dev",
+          "--",
+          "--host",
+          "127.0.0.1",
+          "--port",
+          "5173"
+        ],
+        "cwd": "D:\\InfraWatch\\frontend",
+        "env": {},
+        "prependPath": [],
+        "platform": "win32"
+      }
+    ]
+  }
+}
