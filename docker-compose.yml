@@ -105,7 +105,7 @@ services:
     ports:
       - "${ALERTMANAGER_PORT:-9093}:9093"
     volumes:
-      - ./infrastructure/alertmanager/alertmanager.yml.example:/etc/alertmanager/alertmanager.yml:ro
+      - ./infrastructure/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
       - alertmanager_data:/alertmanager
     networks:
       - monitoring-network
