@@ -85,6 +85,8 @@ logs/
 # Temporary and test artifacts
 tmp/
 temp/
+*.img
+*.iso
 evidence/test-results/*
 !evidence/test-results/.gitkeep
 evidence/chaos-results/*

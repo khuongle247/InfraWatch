@@ -1,40 +1,34 @@
 # Ma trận Truy vết Yêu cầu (Requirements Traceability Matrix — RTM)
 
-Tài liệu này ánh xạ toàn bộ yêu cầu chức năng (`FR`) và phi chức năng (`NFR`) từ `docs/REQUIREMENTS.md` sang các chỉ số đánh giá (`docs/KPI_DEFINITIONS.md`) và kịch bản kiểm thử (`docs/TEST_PLAN.md` / `docs/TEST_CASES.md`).
+Tài liệu này ánh xạ toàn bộ **86 yêu cầu chức năng (10 module)**, **22 yêu cầu phi chức năng** và **18 tiêu chí nghiệm thu** từ `InfraWatch - SRS.docx` (v1.0) sang các chỉ số KPI (`docs/KPI_DEFINITIONS.md`) và kịch bản kiểm thử (`docs/TEST_CASES.md`).
 
-> **Trạng thái tài liệu (`[Draft - Sync Pending SRS]`):** Ma trận được lập dựa trên `docs/REQUIREMENTS.md`, `docs/SCOPE.md` và `docs/api/API_CONTRACT.md` hiện hành. Các ngưỡng định lượng `[Proposed]` và phạm vi dịch vụ mở rộng (`Blackbox Exporter`, `PostgreSQL`) sẽ được đồng bộ ngay sau khi bản SRS hoàn chỉnh của Tuần 4 được ban hành.
+> **Trạng thái tài liệu (`[Synced with SRS v1.0 | Thresholds Proposed]`):** Đã đồng bộ bộ mã yêu cầu mới của SRS v1.0. Các ngưỡng định lượng mang nhãn `[Proposed]` sẽ được khóa chính thức sau khi hoàn tất đo thực nghiệm và được PM/mentor phê duyệt (tuân thủ `CON-007`).
 
 ---
 
-## 1. Ma trận Truy vết Yêu cầu Chức năng (Functional Requirements)
+## 1. Ma trận Truy vết Yêu cầu Chức năng (86 FR — 10 Modules)
 
-| Mã Yêu cầu | Nhóm & Mô tả tóm tắt (`docs/REQUIREMENTS.md`) | Chỉ số KPI liên quan (`[Proposed]`) | Mã Test Case dự kiến | Cấp độ Kiểm thử | Ghi chú đối soát SRS |
+| Nhóm Module SRS v1.0 | Mã Yêu cầu (`FR`) | Tiêu chí Nghiệm thu (`AC`) | Chỉ số KPI Liên quan (`[Proposed]`) | Mã Test Case (`TEST_CASES.md`) | Mã TC trong SRS v1.0 |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **FR-DC-01** | Thu thập metrics Host Linux (CPU, RAM, Disk, Net) chu kỳ `15s` via Node Exporter | `Scrape Success Rate >= 99.5%`<br>`Data Completeness >= 99.0%` | `TC-INFRA-02`<br>`TC-DATA-01` | Integration | Khớp `scrape_interval: 15s` trong `prometheus.yml` |
-| **FR-DC-02** | Thu thập metrics từng Docker container (CPU, RAM, Disk I/O, Net I/O) via cAdvisor | `Scrape Success Rate >= 99.5%`<br>`Data Completeness >= 99.0%` | `TC-INFRA-03`<br>`TC-DATA-02` | Integration | Kiểm tra tương thích nhãn `name` khi cAdvisor nâng bản |
-| **FR-DC-03** | Tự động phát hiện container mới khởi chạy hoặc dừng hoạt động | `Data Completeness >= 99.0%`<br>`Dashboard Accuracy = 100%` | `TC-E2E-01` | System E2E | Đã định nghĩa trong `docs/TEST_PLAN.md` (`E2E-01`) |
-| **FR-DS-01** | Lưu trữ time-series trên Prometheus TSDB tối thiểu `15 ngày` | `Data Completeness >= 99.0%` | `TC-INFRA-01` | Integration | Khớp `--storage.tsdb.retention.time=15d` |
-| **FR-DS-02** | Hỗ trợ Instant Query và Range Query qua ngôn ngữ PromQL | `Dashboard Accuracy = 100%`<br>`API Latency (p95) < 300 ms` | `TC-API-02`..`TC-API-04` | Integration | Kiểm chứng qua FastAPI (`docs/api/API_CONTRACT.md`) |
-| **FR-AL-01** | Đánh giá liên tục Alert Rules theo chu kỳ `15 giây` | `MTTD < 60s` | `TC-CHAOS-01`..`03` | Chaos / E2E | Khớp `evaluation_interval: 15s` |
-| **FR-AL-02** | Phát hiện sự cố vượt ngưỡng tài nguyên (CPU, RAM, Disk, Service Down) | `Alert Quality` (`Precision >= 95%`, `Recall = 100%`, `FPR <= 5%`) | `TC-CHAOS-01`..`04` | Chaos & Boundary | **[Chờ SRS]** Chốt ngưỡng chuẩn & tham số `for` trên lab |
-| **FR-AL-03** | Gửi thông báo tức thời tới Telegram khi `firing` và khi phục hồi `resolved` | `Alert Delivery = 100%`<br>`Notification Time < 15s`<br>`MTTR < 90s` | `TC-E2E-02`<br>`TC-CHAOS-01`..`03` | System E2E | Đo tự động 5 mốc $T_0, T_1, T_2, T_{\text{stop}}, T_3$ |
-| **FR-AL-04** | Gom nhóm (`grouping`) và chống gửi cảnh báo lặp lại (`deduplication`) | `Alert Quality` (`FPR <= 5%`) | `TC-CHAOS-05` | Chaos Boundary | Kiểm tra `group_wait` / `group_interval` trên Alertmanager |
-| **FR-UI-01** | Web Dashboard hiển thị danh sách hosts và trạng thái `UP/DOWN` | `Dashboard Accuracy = 100%` | `TC-API-03`<br>`TC-DATA-01` | Integration / UI | Đối chiếu PromQL $\leftrightarrow$ `GET /api/v1/hosts` $\leftrightarrow$ React UI |
-| **FR-UI-02** | Web Dashboard hiển thị danh sách containers đang chạy và tài nguyên tiêu thụ | `Dashboard Accuracy = 100%` | `TC-API-04`<br>`TC-DATA-02` | Integration / UI | Đối chiếu PromQL $\leftrightarrow$ `GET /api/v1/containers` $\leftrightarrow$ React UI |
-| **FR-UI-03** | Web Dashboard hiển thị danh sách cảnh báo đang hoạt động (`firing`) kèm severity | `Dashboard Accuracy = 100%` | `TC-API-05`<br>`TC-DATA-03` | Integration / UI | **[Chờ SRS]** Xác nhận chỉ đọc active alerts hay lưu lịch sử DB |
-| **FR-UI-04** | Tích hợp Grafana với các dashboard mẫu đã provisioning sẵn | `Deployment Reproducibility = 100%` | `TC-INFRA-04` | System E2E | Kiểm tra datasource Prometheus & JSON provisioning `:3001` |
+| **A. Environment Management** | `FR-ENV-001` .. `FR-ENV-006` | `AC-002` | `Dashboard Accuracy = 100%` | `TC-ENV-01`, `TC-DATA-01` | `TC-018`, `TC-022` |
+| **B. Node Monitoring** | `FR-NODE-001` .. `FR-NODE-011` | `AC-004`, `AC-005`, `AC-017` | `Scrape Success Rate >= 99.5%`<br>`Data Completeness >= 99.0%` | `TC-INFRA-02`, `TC-API-03`, `TC-DATA-01`, `TC-CHAOS-01..03`, `TC-HLT-01` | `TC-001` .. `TC-005`, `TC-019` |
+| **C. Cloud Simulation** | `FR-CLOUD-001` .. `FR-CLOUD-008` | `AC-003`, `AC-005` | `Data Completeness >= 99.0%`<br>`Dashboard Accuracy = 100%` | `TC-ENV-01`, `TC-ENV-02` | `TC-006`, `TC-018` |
+| **D. Data Center Simulation** | `FR-DC-001` .. `FR-DC-008` | `AC-003`, `AC-005` | `Data Completeness >= 99.0%`<br>`Dashboard Accuracy = 100%` | `TC-ENV-01`, `TC-ENV-02` | `TC-007`, `TC-018` |
+| **E. Container Monitoring** | `FR-CON-001` .. `FR-CON-007` | `AC-006` | `Scrape Success Rate >= 99.5%`<br>`Dashboard Accuracy = 100%` | `TC-INFRA-03`, `TC-API-04`, `TC-DATA-02`, `TC-CHAOS-03` | `TC-008` |
+| **F. Service Monitoring** | `FR-SVC-001` .. `FR-SVC-006` | `AC-007` | `Scrape Success Rate >= 99.5%`<br>`MTTD < 60s` | `TC-CHAOS-03` *(Blackbox HTTP/TCP probe `probe_success`)* | `TC-009` |
+| **G. Overview Dashboard** | `FR-DASH-001` .. `FR-DASH-008` | `AC-001`, `AC-002` | `Dashboard Accuracy = 100%` | `TC-API-02`, `TC-DATA-01..03`, `TC-HLT-03` | `TC-018` |
+| **H. Alert Management** | `FR-ALT-001` .. `FR-ALT-014` | `AC-008` .. `AC-012`, `AC-015` | `MTTD < 60s` (`KPI-001`), `Notification Time < 15s` (`KPI-002`), `E2E < 75s` (`KPI-003`), `MTTR < 90s` (`KPI-004`), `Alert Delivery = 100%`, `Precision >= 95%` (`KPI-006`), `Recall = 100%` (`KPI-007`), `FPR <= 5%` (`KPI-008`) | `TC-API-05`, `TC-DATA-03`, `TC-CHAOS-01..05`, `TC-ALT-01`, `TC-ALT-02` | `TC-010` .. `TC-015` |
+| **I. Incident Management** | `FR-INC-001` .. `FR-INC-012` | `AC-013` .. `AC-016` | `Recovery Monitoring = 100%` | `TC-INC-01`, `TC-INC-02`, `TC-INC-03` | `TC-016`, `TC-017` |
+| **J. Monitoring Health** | `FR-HLT-001` .. `FR-HLT-006` | `AC-017` | `Scrape Success Rate >= 99.5%` | `TC-API-01`, `TC-API-07`, `TC-HLT-01..03` | `TC-019` .. `TC-021` |
 
 ---
 
-## 2. Ma trận Truy vết Yêu cầu Phi chức năng (Non-Functional Requirements)
+## 2. Ma trận Truy vết Yêu cầu Phi chức năng & Quy tắc Dữ liệu (`NFR-001..022`, `DR-010`)
 
-| Mã Yêu cầu | Mô tả tóm tắt (`docs/REQUIREMENTS.md`) | Chỉ số KPI & Ngưỡng `[Proposed]` | Mã Test Case dự kiến | Ghi chú đối soát SRS |
+| Nhóm NFR / Data Rule | Mã Yêu cầu | Chỉ số KPI & Ngưỡng `[Proposed]` | Mã Test Case (`TEST_CASES.md`) | Ghi chú Đối soát |
 | :--- | :--- | :--- | :--- | :--- |
-| **NFR-PERF-01** | Thời gian phản hồi Backend API cho truy vấn tổng quan | `API Latency (p95) < 300 ms` (`[Proposed]`) | `TC-PERF-01` | `REQUIREMENTS.md` ghi `< 500ms`; cần đồng bộ với SRS |
-| **NFR-PERF-02** | Độ trễ từ lúc sự cố phát sinh đến khi Telegram nhận cảnh báo | `MTTD < 60s`, `End-to-End < 75s` (`[Proposed]`) | `TC-CHAOS-01`..`03` | Yêu cầu cấu hình `for: 30s` trên lab để khả thi |
-| **NFR-PERF-03** | Mức tiêu hao tài nguyên của hệ thống giám sát trên máy chủ lab | `Resource Footprint`: Toàn stack `<= 1.5 GB RAM`, `<= 10% CPU` (`[Proposed]`) | `TC-PERF-02` | `REQUIREMENTS.md` mới giới hạn riêng 2 exporters (`<= 3% CPU, 150MB RAM`) |
-| **NFR-REL-01** | Các container dịch vụ cấu hình tự khởi động lại (`restart: unless-stopped`) | `Deployment Reproducibility = 100%` | `TC-INFRA-01` | Kiểm chứng qua `docker inspect` & khôi phục sau sự cố |
-| **NFR-REL-02** | Duy trì khả năng hoạt động liên tục (`uptime`) `>= 99%` trong lab | `Scrape Success Rate >= 99.5%` (`[Proposed]`) | `TC-PERF-03` | Đo liên tục chuỗi `up == 1` trong phiên chạy ổn định |
-| **NFR-SEC-01** | Không lưu trữ secrets, Telegram Bot Token, mật khẩu trong Git | `Security = 0 vi phạm` | `TC-SEC-01` | Quét toàn bộ repo, `git log` & kiểm tra `.gitignore` (`*.img`, `*.iso`) |
-| **NFR-SEC-02** | Nạp thông tin nhạy cảm qua biến môi trường (`.env`) | `Security = 0 vi phạm` | `TC-SEC-01` | Đối chiếu `docker-compose.yml` với `.env.example` |
-| **NFR-SEC-03** | Khóa Grafana bằng xác thực admin, tắt tự đăng ký (`GF_USERS_ALLOW_SIGN_UP=false`) | `Security = 0 vi phạm` | `TC-SEC-02` | Kiểm tra truy cập ẩn danh tới port `:3001` |
+| **Performance** | `NFR-001` .. `NFR-003` | `API Latency (p95) < 300 ms`<br>`Resource Footprint <= 1.5 GB RAM, <= 10% CPU` | `TC-PERF-01`, `TC-PERF-02` | Baseline 27/11: `675.86 MiB` RAM, `1.71%` CPU (idle) |
+| **Reliability & Observability** | `NFR-004` .. `NFR-006`, `NFR-021` | `Scrape Success Rate >= 99.5%` (`KPI-009`) | `TC-API-07`, `TC-CHAOS-03`, `TC-HLT-01..03`, `TC-PERF-03` | Phân biệt giá trị `0` với `missing/stale` (`DR-009`) |
+| **Security** | `NFR-007` .. `NFR-010` | `Security = 0 vi phạm` | `TC-SEC-01`, `TC-SEC-02`, `TC-API-06` | Không lộ `.env`/token; khóa Grafana `ALLOW_SIGN_UP=false` |
+| **Data Integrity & Time** | `NFR-018`, `NFR-019`, `NFR-022`, `DR-010` | `Dashboard Accuracy = 100%` | `TC-DATA-01..03`, `TC-ENV-01`, `TC-INC-02`, `TC-CHAOS-01..03` | Nhất quán metadata DB & PromQL labels; chuẩn UTC (`BR-012`) |
+| **Maintainability, Scalability, Portability & Usability** | `NFR-011` .. `NFR-017`, `NFR-020` | `Deployment Reproducibility = 100%` | `TC-INFRA-01..04`, `TC-ENV-01`, `TC-HLT-03` | Khớp `AC-018` & ràng buộc tách rời cấu hình (`NFR-011`) |
