@@ -4,12 +4,9 @@ import Icon from '../components/common/Icon.jsx';
 const NAV_ITEMS = [
   { id: 'overview', icon: 'dashboard', label: 'Tổng quan', href: '#/overview' },
   { id: 'hosts', icon: 'server', label: 'Máy chủ', href: '#/hosts' },
-];
-
-const PLANNED_ITEMS = [
-  { icon: 'box', label: 'Containers' },
-  { icon: 'activity', label: 'Dịch vụ' },
-  { icon: 'bell', label: 'Cảnh báo' },
+  { id: 'containers', icon: 'box', label: 'Containers', href: '#/containers' },
+  { id: 'services', icon: 'activity', label: 'Dịch vụ', href: '#/services' },
+  { id: 'alerts', icon: 'bell', label: 'Cảnh báo', href: '#/alerts' },
 ];
 
 function BrandMark() {
@@ -55,18 +52,6 @@ export default function Sidebar({ activePage, mobileOpen, onClose, onNotify }) {
               <span>{item.label}</span>
               {activePage === item.id && <span className="iw-nav-marker" />}
             </a>
-          ))}
-          {PLANNED_ITEMS.map((item) => (
-            <button
-              className="iw-nav-btn"
-              type="button"
-              key={item.label}
-              onClick={() => onNotify(`${item.label} sẽ được xây dựng ở các ngày tiếp theo.`)}
-            >
-              <Icon name={item.icon} />
-              <span>{item.label}</span>
-              <span className="iw-soon">Sắp có</span>
-            </button>
           ))}
         </nav>
         <div className="iw-nav-label iw-nav-label--tools">TOOLS</div>

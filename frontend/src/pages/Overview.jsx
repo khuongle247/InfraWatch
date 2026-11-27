@@ -231,7 +231,7 @@ export default function Overview() {
                 </div>
               ))}
             </div>
-            <div className="iw-operations-note"><Icon name="spark" size={16} /><p><strong>What's next?</strong> Các màn hình còn lại sẽ được xây theo lộ trình; API thật chưa kết nối.</p></div>
+            <div className="iw-operations-note"><Icon name="spark" size={16} /><p><strong>Prototype navigation</strong> Các màn hình Hosts, Containers, Services và Alerts đã sẵn sàng trong Sidebar; dữ liệu vẫn là mock, chưa kết nối API thật.</p></div>
           </article>
         </section>
         <footer className="iw-footer"><span>© 2026 InfraWatch · Infrastructure Monitoring Platform</span><span>Built by <strong>M04 / Phan Tấn Thuận</strong> · UI Concept v1.1</span></footer>

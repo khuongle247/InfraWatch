@@ -4,6 +4,14 @@ const STATE_CLASSES = {
   Healthy: '',
   Warning: 'iw-state--warning',
   Offline: 'iw-state--offline',
+  Running: 'iw-state--running',
+  Stopped: 'iw-state--stopped',
+  Critical: 'iw-state--critical',
+  High: 'iw-state--high',
+  Info: 'iw-state--info',
+  Firing: 'iw-state--firing',
+  Acknowledged: 'iw-state--acknowledged',
+  Resolved: 'iw-state--resolved',
 };
 
 export default function StatusBadge({ state, children }) {
