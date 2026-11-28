@@ -105,13 +105,29 @@ services:
     ports:
       - "${ALERTMANAGER_PORT:-9093}:9093"
     volumes:
-      - ./infrastructure/alertmanager/alertmanager.yml.example:/etc/alertmanager/alertmanager.yml:ro
+      - ./infrastructure/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
       - alertmanager_data:/alertmanager
     networks:
       - monitoring-network
 
   # ----------------------------------------------------------------------------
-  # 5. Grafana - Deep Metrics Visualization & Dashboards
+  # 5. Blackbox Exporter - Probing Endpoints & Ports
+  # ----------------------------------------------------------------------------
+  blackbox-exporter:
+    image: prom/blackbox-exporter:v0.25.0
+    container_name: infrawatch-blackbox-exporter
+    restart: unless-stopped
+    command:
+      - '--config.file=/etc/blackbox_exporter/blackbox.yml'
+    ports:
+      - "9115:9115"
+    volumes:
+      - ./infrastructure/prometheus/blackbox.yml:/etc/blackbox_exporter/blackbox.yml:ro
+    networks:
+      - monitoring-network
+
+  # ----------------------------------------------------------------------------
+  # 6. Grafana - Deep Metrics Visualization & Dashboards
   # ----------------------------------------------------------------------------
   grafana:
     image: grafana/grafana:10.4.2
@@ -133,7 +149,7 @@ services:
       - prometheus
 
   # ----------------------------------------------------------------------------
-  # 6. Backend - FastAPI Integration & Custom API Service
+  # 7. Backend - FastAPI Integration & Custom API Service
   # ----------------------------------------------------------------------------
   backend:
     build:
@@ -153,7 +169,7 @@ services:
       - prometheus
 
   # ----------------------------------------------------------------------------
-  # 7. Frontend - React + Vite Operations Web Dashboard
+  # 8. Frontend - React + Vite Operations Web Dashboard
   # ----------------------------------------------------------------------------
   frontend:
     build:

@@ -1,0 +1,43 @@
+# ==============================================================================
+# Prometheus Alert Rules — Blackbox Exporter (InfraWatch N4.7)
+# File: infrastructure/prometheus/rules/blackbox_alerts.yml
+# ==============================================================================
+
+groups:
+  - name: blackbox_alerts
+    rules:
+      # ------------------------------------------------------------------------
+      # 1. Endpoint HTTP không phản hồi (Critical trong 1 phút)
+      # ------------------------------------------------------------------------
+      - alert: BlackboxEndpointDown
+        expr: probe_success{job="blackbox-http"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Endpoint HTTP DOWN trên {{ $labels.instance }}"
+          description: "Endpoint {{ $labels.instance }} không phản hồi HTTP 2xx trong 1 phút."
+
+      # ------------------------------------------------------------------------
+      # 2. Cổng TCP không kết nối được (Critical trong 1 phút)
+      # ------------------------------------------------------------------------
+      - alert: BlackboxEndpointDownTCP
+        expr: probe_success{job="blackbox-tcp"} == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Port TCP DOWN trên {{ $labels.instance }}"
+          description: "Cổng {{ $labels.instance }} không chấp nhận kết nối TCP trong 1 phút."
+
+      # ------------------------------------------------------------------------
+      # 3. Thời gian probe quá lâu (Warning > 2s trong 1 phút)
+      # ------------------------------------------------------------------------
+      - alert: BlackboxHighLatency
+        expr: probe_duration_seconds{job="blackbox-http"} > 2
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Độ trễ probe cao trên {{ $labels.instance }}"
+          description: "Thời gian phản hồi endpoint {{ $labels.instance }} vượt quá 2 giây trong 1 phút."

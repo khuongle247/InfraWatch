@@ -1,0 +1,22 @@
+# ==============================================================================
+# Blackbox Exporter Configuration (InfraWatch N4.7)
+# Documentation: https://github.com/prometheus/blackbox_exporter
+# ==============================================================================
+
+modules:
+  # ----------------------------------------------------------------------------
+  # 1. HTTP 2xx Probe: Kiểm tra endpoint HTTP có trả về mã trạng thái 2xx hay không
+  # ----------------------------------------------------------------------------
+  http_2xx:
+    prober: http
+    timeout: 5s
+    http:
+      preferred_ip_protocol: "ip4"
+      method: GET
+
+  # ----------------------------------------------------------------------------
+  # 2. TCP Connect Probe: Kiểm tra kết nối TCP tới một cổng cụ thể
+  # ----------------------------------------------------------------------------
+  tcp_connect:
+    prober: tcp
+    timeout: 5s
